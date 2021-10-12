@@ -1,7 +1,8 @@
-class LLNode<T> {
+class LinkedListNode<T> {
   index: number;
   value: T;
-  next: LinkedListNode<T> = null;
+  next: LinkedListNode<T> | null = null;
+  prevoius: LinkedListNode<T> | null = null;
 
   constructor(index: number, value: T) {
     this.index = index;
@@ -9,31 +10,36 @@ class LLNode<T> {
   }
 }
 
-type LinkedListNode<T> = LLNode<T> | null;
-
 class LinkedList<T> {
-  private head: LinkedListNode<T> = null;
-  private tail: LinkedListNode<T> = null;
+  private head: LinkedListNode<T> | null = null;
+  private tail: LinkedListNode<T> | null = null;
+
   legnth: number = 0;
 
   add(value: T) {
     if (!this.head) {
-      this.head = new LLNode<T>(this.legnth, value);
+      this.head = new LinkedListNode<T>(this.legnth, value);
+      this.head.prevoius = null;
       this.legnth++;
       return;
     }
 
     if (!this.tail) {
-      this.head!!.next = new LLNode<T>(this.legnth, value);
-      this.tail = this.head!!.next;
+      this.head!!.next = new LinkedListNode<T>(this.legnth, value);
+      this.tail!! = this.head!!.next;
+      this.tail.prevoius = this.head;
       this.legnth++;
       return;
     }
 
-    let tempNode: LinkedListNode<T> = this.tail;
+    let tempNode: LinkedListNode<T> | null = this.tail!!;
+    let previousNode: LinkedListNode<T> | null = this.tail.prevoius;
 
-    tempNode!!.next = new LLNode<T>(this.legnth, value);
+    tempNode.next = new LinkedListNode<T>(this.legnth, value);
+    tempNode.next.prevoius = tempNode;
+
     this.tail = tempNode!!.next;
+
     this.legnth++;
   }
 
@@ -50,7 +56,7 @@ class LinkedList<T> {
       return this.tail!!.value;
     }
 
-    let tempNode: LinkedListNode<T> = this.head!!.next;
+    let tempNode: LinkedListNode<T> | null = this.head!!.next;
     for (let i = 1; i <= this.legnth - 2; i++) {
       if (tempNode!!.index == index) {
         return tempNode!!.value;
@@ -61,7 +67,7 @@ class LinkedList<T> {
     return null;
   }
 
-  private getNode(index: number): LinkedListNode<T> {
+  private getNode(index: number): LinkedListNode<T> | null {
     if (index == this.head!!.index) {
       return this.head!!;
     }
@@ -70,7 +76,7 @@ class LinkedList<T> {
       return this.tail!!;
     }
 
-    let tempNode: LinkedListNode<T> = this.head!!.next;
+    let tempNode: LinkedListNode<T> | null = this.head!!.next;
     for (let i = 1; i < this.legnth - 1; i++) {
       if (tempNode!!.index == index) {
         return tempNode!!;
@@ -82,7 +88,7 @@ class LinkedList<T> {
   }
 
   update(index: number, value: T) {
-    let tempNode: LinkedListNode<T> = this.getNode(index);
+    let tempNode: LinkedListNode<T> | null = this.getNode(index);
     if (!tempNode) {
       console.log("index number is invalid");
       return;
@@ -93,18 +99,17 @@ class LinkedList<T> {
 
   insert(index: number, value: T) {
     if (this.isValidIndex(index)) {
-      if (index <= 0) {
-        console.log("first add  minimum 2 elements in linkedlist");
-      }
       return;
     }
 
-    let tempNode: LinkedListNode<T>;
+    let tempNode: LinkedListNode<T> | null;
+    let previousNode: LinkedListNode<T> | null = null;
 
     if (index == this.head!!.index) {
       tempNode = this.head!!;
-      this.head = new LLNode<T>(index, value);
+      this.head = new LinkedListNode<T>(index, value);
       this.head!!.next = tempNode;
+      tempNode.prevoius = this.head;
       this.legnth++;
       this.indexing();
       return;
@@ -112,20 +117,30 @@ class LinkedList<T> {
 
     if (index == this.tail!!.index) {
       tempNode = this.tail!!;
-      this.tail = new LLNode<T>(index, value);
-      this.tail.index++;
-      tempNode.next = this.tail;
+      previousNode = this.tail!!.prevoius;
+
+      previousNode!!.next = new LinkedListNode<T>(index, value);
+      previousNode!!.next.prevoius = previousNode;
+
+      previousNode!!.next.next = tempNode;
+      tempNode.prevoius = previousNode!!.next;
+
+      this.tail = tempNode;
+      this.tail.index = this.legnth;
+
       this.legnth++;
+
       return;
     }
 
     tempNode = this.head!!.next;
-    let previousNode: LinkedListNode<T> = this.head!!.next;
-
+    previousNode = this.head;
     for (let i = 1; i < this.legnth - 1; i++) {
       if (tempNode!!.index == index) {
-        previousNode!!.next = new LLNode<T>(index, value);
+        previousNode!!.next = new LinkedListNode<T>(index, value);
+        previousNode!!.next.prevoius = previousNode;
         previousNode!!.next!!.next = tempNode;
+        tempNode!!.prevoius = previousNode!!.next;
         this.legnth++;
         this.indexing();
         break;
@@ -135,21 +150,34 @@ class LinkedList<T> {
     }
   }
 
-  print() {
-    let tempNode: LinkedListNode<T> = this.head!!;
+  printNodes() {
+    let tempNode: LinkedListNode<T> | null = this.head!!;
     for (let i = 0; i < this.legnth; i++) {
-      console.log(`${tempNode!!.index} => ${tempNode!!.value}`);
+      console.log(
+        `${tempNode?.index} => ${tempNode?.prevoius?.index} ${tempNode?.next?.index}`
+      );
+      tempNode = tempNode!!.next;
+    }
+  }
+
+  print() {
+    let tempNode: LinkedListNode<T> | null = this.head!!;
+    for (let i = 0; i < this.legnth; i++) {
+      console.log(`${tempNode?.index} => ${tempNode?.value}`);
       tempNode = tempNode!!.next;
     }
   }
 
   private indexing() {
-    let tempNode: LinkedListNode<T> = this.head;
+    let tempNode: LinkedListNode<T> | null = this.head;
     for (let i = 0; i < this.legnth; i++) {
       if (!tempNode) {
         break;
       }
-      tempNode!!.index = i;
+      if (i > 0) {
+        tempNode!!.index = i;
+        tempNode.prevoius!!.index = i - 1;
+      }
       tempNode = tempNode!!.next;
     }
   }
@@ -163,35 +191,31 @@ class LinkedList<T> {
       return;
     }
 
-    let tempNode: LinkedListNode<T>;
+    let tempNode: LinkedListNode<T> | null = null;
+    let previousNode: LinkedListNode<T> | null = null;
 
     if (index == this.head!!.index) {
-      tempNode = this.head!!;
+      tempNode = this.head;
       this.head = tempNode!!.next;
+      this.head!!.prevoius = null;
       this.legnth--;
       this.indexing();
       return;
     }
 
     if (index == this.tail!!.index) {
-      tempNode = this.getNode(index - 1);
-      this.tail = tempNode;
+      previousNode = this.tail!!.prevoius;
+      this.tail = previousNode!!.next;
       this.legnth--;
       return;
     }
 
     tempNode = this.head!!.next;
-    let previousNode: LinkedListNode<T>;
-
+    previousNode = this.head;
     for (let i = 1; i < this.legnth - 1; i++) {
-      if (tempNode!!.index == index) {
-        if (index == 1) {
-          this.head!!.next = tempNode!!.next;
-          this.legnth--;
-          this.indexing();
-          break;
-        }
+      if (tempNode?.index == index) {
         previousNode!!.next = tempNode!!.next;
+        tempNode!!.prevoius = previousNode;
         this.legnth--;
         this.indexing();
         break;
