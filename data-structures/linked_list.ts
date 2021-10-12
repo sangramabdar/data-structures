@@ -106,6 +106,7 @@ class LinkedList<T> {
       this.head = new LLNode<T>(index, value);
       this.head!!.next = tempNode;
       this.legnth++;
+      this.indexing();
       return;
     }
 
@@ -126,7 +127,7 @@ class LinkedList<T> {
         previousNode!!.next = new LLNode<T>(index, value);
         previousNode!!.next!!.next = tempNode;
         this.legnth++;
-        this.indexing(tempNode!!, i + 1, this.legnth);
+        this.indexing();
         break;
       }
       previousNode = tempNode;
@@ -142,9 +143,9 @@ class LinkedList<T> {
     }
   }
 
-  private indexing(node: LinkedListNode<T>, include: number, exclude: number) {
-    let tempNode: LinkedListNode<T> = node;
-    for (let i = include; i < exclude; i++) {
+  private indexing() {
+    let tempNode: LinkedListNode<T> = this.head;
+    for (let i = 0; i < this.legnth; i++) {
       if (!tempNode) {
         break;
       }
@@ -168,7 +169,7 @@ class LinkedList<T> {
       tempNode = this.head!!;
       this.head = tempNode!!.next;
       this.legnth--;
-      this.indexing(this.head!!, index, this.legnth);
+      this.indexing();
       return;
     }
 
@@ -187,12 +188,12 @@ class LinkedList<T> {
         if (index == 1) {
           this.head!!.next = tempNode!!.next;
           this.legnth--;
-          this.indexing(tempNode!!.next, i, this.legnth);
+          this.indexing();
           break;
         }
         previousNode!!.next = tempNode!!.next;
         this.legnth--;
-        this.indexing(tempNode!!.next, i, this.legnth);
+        this.indexing();
         break;
       }
       previousNode = tempNode;
