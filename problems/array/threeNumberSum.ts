@@ -1,6 +1,6 @@
 //time complexity - o(n^2) space complexity - o(n)
 function threeNumberSum(array: number[], targetSum: number) {
-  array.sort();
+  array.sort((a, b) => a - b);
   let newArray: number[][] = [];
   let currentSum = 0;
   let left = 0;
