@@ -1,4 +1,7 @@
 import LinkedList from "./data-structures/linked_list";
-import Quene from "./data-structures/quene";
 
 let linkedList = new LinkedList<number>();
+linkedList.inserFirst(1);
+linkedList.deleteLast();
+console.log(linkedList.delete(1));
+linkedList.printNodes();

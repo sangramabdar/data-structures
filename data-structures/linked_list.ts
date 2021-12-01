@@ -1,5 +1,5 @@
 class LinkedListNode<T> {
-  value: T;
+  value: T | null;
   next: LinkedListNode<T> | null = null;
   prevoius: LinkedListNode<T> | null = null;
 
@@ -14,28 +14,44 @@ class LinkedList<T> {
 
   legnth: number = 0;
 
+  inserFirst(value: T) {
+    let node = new LinkedListNode<T>(value);
+
+    if (!this.#head) {
+      this.#head = node;
+      this.legnth++;
+      this.#tail = this.#head;
+      return;
+    }
+
+    node.next = this.#head;
+    this.#head.prevoius = node;
+    this.#head = node;
+    this.legnth++;
+  }
+
+  insertLast(value: T) {
+    let node = new LinkedListNode<T>(value);
+
+    if (!this.#tail) {
+      this.#tail = node;
+      this.legnth++;
+      this.#head = this.#tail;
+      return;
+    }
+
+    node.prevoius = this.#tail;
+    this.#tail.next = node;
+    this.#tail = node;
+    this.legnth++;
+  }
+
   add(value: T) {
     if (!this.#head) {
-      this.#head = new LinkedListNode<T>(value);
-      this.#head.prevoius = null;
-      this.#tail = this.#head;
-      this.legnth++;
+      this.inserFirst(value);
       return;
     }
-
-    if (!this.#head?.next) {
-      this.#head.next = new LinkedListNode<T>(value);
-      this.#tail = this.#head?.next;
-      this.#tail.prevoius = this.#head;
-      this.legnth++;
-      return;
-    }
-
-    let tempNode: LinkedListNode<T> | null = this.#tail;
-    tempNode.next = new LinkedListNode<T>(value);
-    tempNode.next.prevoius = tempNode;
-    this.#tail = tempNode!!.next;
-    this.legnth++;
+    this.insertLast(value);
   }
 
   get(value: T): T | null {
@@ -59,6 +75,10 @@ class LinkedList<T> {
   }
 
   #getNode(value: T): LinkedListNode<T> | null {
+    if (!this.#head) {
+      return null;
+    }
+
     if (value == this.#head?.value) {
       return this.#head;
     }
@@ -90,48 +110,31 @@ class LinkedList<T> {
   }
 
   insert(value: T, newValue: T) {
-    let tempNode: LinkedListNode<T> | null;
-    let previousNode: LinkedListNode<T> | null = null;
-
-    tempNode = this.#getNode(value);
-
     if (value == this.#head?.value) {
-      tempNode = this.#head;
-      this.#head = new LinkedListNode<T>(newValue);
-      this.#head.next = tempNode;
-      tempNode.prevoius = this.#head;
-      this.legnth++;
+      this.inserFirst(newValue);
       return;
     }
 
     if (value == this.#tail?.value) {
-      tempNode = this.#tail!!;
-      previousNode = this.#tail!!.prevoius;
-      previousNode!!.next = new LinkedListNode<T>(value);
-      previousNode!!.next.prevoius = previousNode;
-      previousNode!!.next.next = tempNode;
-      tempNode.prevoius = previousNode!!.next;
-      this.#tail = tempNode;
-      this.legnth++;
+      this.insertLast(newValue);
       return;
     }
 
-    tempNode = this.#head!!.next;
-    previousNode = this.#head;
+    let tempNode = this.#getNode(value);
 
-    for (let i = 1; i < this.legnth - 1; i++) {
-      if (tempNode.value == value) {
-        previousNode.next = new LinkedListNode<T>(value);
-        previousNode.next.prevoius = previousNode;
-        previousNode.next.next = tempNode;
-        tempNode.prevoius = previousNode?.next;
-        this.legnth++;
-        return;
-      }
-      previousNode = tempNode;
-      tempNode = tempNode?.next;
+    if (!tempNode) {
+      console.log("provided value is not in linkedlist");
+      return;
     }
-    console.log("provided value is not in linkedlist");
+
+    let nextNode = tempNode.next;
+
+    let node = new LinkedListNode(newValue);
+
+    node.prevoius = tempNode;
+    tempNode.next = node;
+    node.next = nextNode;
+    nextNode.prevoius = node;
   }
 
   printNodes() {
@@ -200,41 +203,29 @@ class LinkedList<T> {
     return value;
   }
 
-  delete(value: T) {
-    let tempNode: LinkedListNode<T> | null = null;
-    let previousNode: LinkedListNode<T> | null = null;
-
+  delete(value: T): T {
     if (value == this.#head?.value) {
-      tempNode = this.#head;
-      this.#head = tempNode?.next;
-      this.#head!!.prevoius = null;
-      this.legnth--;
-      return;
+      return this.deleteFirst();
     }
 
     if (value == this.#tail?.value) {
-      previousNode = this.#tail?.prevoius;
-      this.#tail = previousNode;
-      this.#tail.next = null;
-      this.legnth--;
-      return;
+      return this.deleteLast();
     }
 
-    tempNode = this.#head!!.next;
-    previousNode = this.#head;
+    let node = this.#getNode(value);
 
-    for (let i = 1; i < this.legnth - 1; i++) {
-      if (tempNode.value == value) {
-        previousNode!!.next = tempNode!!.next;
-        tempNode!!.prevoius = previousNode;
-        this.legnth--;
-        return;
-      }
-      previousNode = tempNode;
-      tempNode = tempNode!!.next;
+    if (!node) {
+      console.log("provided value is not in linkedlist");
+      return null;
     }
 
-    console.log("provided value is not in linkedlist");
+    let result = node.value;
+    let nextNode = node.next;
+    let previousNode = node.prevoius;
+
+    previousNode.next = nextNode;
+    nextNode.prevoius = previousNode;
+    return result;
   }
 }
 
