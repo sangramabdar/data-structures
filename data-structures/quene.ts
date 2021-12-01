@@ -12,13 +12,10 @@ class Quene<T> {
   deqnque(): T | null {
     if (this.length <= 0) {
       console.log("quene is empty");
-      this.queneNodes.deleteTail();
       return null;
     }
-    let tempNode = this.queneNodes.get(0);
-    this.queneNodes.delete(0);
     this.length--;
-    return tempNode;
+    return this.queneNodes.deleteFirst();
   }
 }
 

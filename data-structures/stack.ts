@@ -16,12 +16,13 @@ class Stack<T> {
     this.length = this.stackNodes.length;
   }
 
-  pop() {
+  pop(): T {
     if (this.length <= 0) {
       console.log("stack is empty");
     }
-    this.stackNodes?.pop();
+    let value = this.stackNodes.pop().value;
     this.length = this.stackNodes.length;
+    return value;
   }
 }
 
