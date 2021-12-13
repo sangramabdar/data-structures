@@ -207,6 +207,17 @@ class LinkedList<T> {
   getHeadNode(): LinkedListNode<T> | null {
     return this.#head;
   }
+
+  getAllValues(): T[] {
+    let curretNode: LinkedListNode<T> | null = this.#head!!;
+    let listOfValues: T[] = [];
+    while (curretNode) {
+      listOfValues.push(curretNode.value!!);
+      curretNode = curretNode?.next;
+    }
+    return listOfValues;
+  }
+
   delete(value: T): T | null {
     if (value == this.#head?.value) {
       return this.deleteFirst();

@@ -18,6 +18,14 @@ class Quene<T> {
     return this.queneNodes.deleteFirst();
   }
 
+  top(): T | null {
+    if (this.length === 0) {
+      console.log("quene is empty");
+      return null;
+    }
+    return this.queneNodes.getHead();
+  }
+
   isEmpty(): boolean {
     if (this.length === 0) {
       return true;
