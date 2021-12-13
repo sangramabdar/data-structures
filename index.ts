@@ -18,5 +18,8 @@ graph.addEdge(3, 2);
 
 graph.addEdge(6, 7);
 
-graph.addEdge(2, 7);
-graph.bfs(1);
+// graph.addEdge(, 7);
+
+console.log(graph.dfs(2));
+
+console.log(graph.bfs(2));
