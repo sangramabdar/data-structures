@@ -66,7 +66,7 @@ class BinaryTree<T> {
     }
   }
 
-  #addChildrenToq(q: Quene<BTNode<T>>, currentNode: BTNode<T> | null) {
+  #addChildrenToquene(q: Quene<BTNode<T>>, currentNode: BTNode<T> | null) {
     if (currentNode?.left) {
       q.enque(currentNode?.left);
     }
@@ -83,7 +83,7 @@ class BinaryTree<T> {
 
     while (!quene.isEmpty()) {
       let curretNode: BTNode<T> | null = quene.deqnque();
-      this.#addChildrenToq(quene, curretNode);
+      this.#addChildrenToquene(quene, curretNode);
       console.log(curretNode?.value);
     }
   }
