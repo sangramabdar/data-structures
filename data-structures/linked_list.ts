@@ -63,7 +63,8 @@ class LinkedList<T> {
       return this.#tail?.value;
     }
 
-    let tempNode: LinkedListNode<T> | null = this.#head?.next;
+    let tempNode: LinkedListNode<T> | null = this.#head!!.next;
+
     while (tempNode) {
       if (tempNode?.value == value) {
         return tempNode?.value;
@@ -134,7 +135,7 @@ class LinkedList<T> {
     node.prevoius = tempNode;
     tempNode.next = node;
     node.next = nextNode;
-    nextNode.prevoius = node;
+    nextNode!!.prevoius = node;
   }
 
   printNodes() {
@@ -178,11 +179,11 @@ class LinkedList<T> {
   }
 
   getHead(): T | null {
-    return this.#head?.value;
+    return this.#head!!.value;
   }
 
   getTail(): T | null {
-    return this.#tail?.value;
+    return this.#tail!!.value;
   }
 
   deleteLast(): T | null {
@@ -203,7 +204,10 @@ class LinkedList<T> {
     return value;
   }
 
-  delete(value: T): T {
+  getHeadNode(): LinkedListNode<T> | null {
+    return this.#head;
+  }
+  delete(value: T): T | null {
     if (value == this.#head?.value) {
       return this.deleteFirst();
     }
@@ -223,8 +227,8 @@ class LinkedList<T> {
     let nextNode = node.next;
     let previousNode = node.prevoius;
 
-    previousNode.next = nextNode;
-    nextNode.prevoius = previousNode;
+    previousNode!!.next = nextNode;
+    nextNode!!.prevoius = previousNode;
     return result;
   }
 }
