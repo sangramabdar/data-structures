@@ -1,25 +1,11 @@
-import Graph from "./data-structures/graph";
+import LinkedList from "./data-structures/linked_list";
 
-let graph = new Graph();
+let list = new LinkedList<number>();
 
-graph.addEdge(1, 2);
+list.add(100);
+list.add(299);
+list.add(300);
 
-graph.addEdge(1, 3);
+list.insertByindex(1, 3);
 
-graph.addEdge(1, 4);
-
-graph.addEdge(2, 4);
-
-graph.addEdge(4, 5);
-
-graph.addEdge(5, 3);
-
-graph.addEdge(3, 2);
-
-graph.addEdge(6, 7);
-
-// graph.addEdge(, 7);
-
-console.log(graph.dfs(2));
-
-console.log(graph.bfs(2));
+console.log(list.length);
