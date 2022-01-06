@@ -1,0 +1,21 @@
+{
+  "files.associations": {
+    "*.ts": "typescript",
+    "*.js": "javascript",
+    "*.tsx": "typescriptreact",
+    "*.css": "css",
+    "*.html": "html",
+    "*.tcc": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "fstream": "cpp",
+    "istream": "cpp",
+    "ostream": "cpp",
+    "sstream": "cpp",
+    "stdexcept": "cpp",
+    "system_error": "cpp",
+    "typeinfo": "cpp",
+    "vector": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "Disabled"
+}

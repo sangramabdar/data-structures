@@ -2,8 +2,8 @@ import Quene from "./quene";
 
 class BTNode<T> {
   value: T;
-  left: BTNode<T> | null;
-  rigtht: BTNode<T> | null;
+  left: BTNode<T> | null = null;
+  rigtht: BTNode<T> | null = null;
   constructor(value: T) {
     this.value = value;
   }
@@ -53,9 +53,7 @@ class BinaryTree<T> {
           currentNode = currentNode?.left;
           continue;
         }
-      }
-
-      if (value > currentNode?.value) {
+      } else {
         if (!currentNode?.rigtht) {
           return null;
         } else {
@@ -89,4 +87,70 @@ class BinaryTree<T> {
   }
 }
 
-export default BinaryTree;
+class BinaryTreeWithRecursion<T> {
+  head: BTNode<T>;
+
+  constructor(value: T) {
+    this.head = new BTNode<T>(value);
+  }
+
+  addNode(value: T, node: BTNode<T> | null = this.head) {
+    if (value < node!!.value) {
+      if (!node!!.left) {
+        node!!.left = new BTNode(value);
+        return;
+      } else {
+        return this.addNode(value, node!!.left);
+      }
+    } else {
+      if (!node!!.rigtht) {
+        node!!.rigtht = new BTNode(value);
+        return;
+      } else {
+        return this.addNode(value, node!!.rigtht);
+      }
+    }
+  }
+
+  getValue(value: T, node: BTNode<T> = this.head) {
+    if (value === node.value) {
+      return node.value;
+    }
+
+    if (value < node.value) {
+      if (!node.left) return null;
+      else {
+        return this.getValue(value, node.left);
+      }
+    } else {
+      if (!node.rigtht) return null;
+      else {
+        return this.getValue(value, node.rigtht);
+      }
+    }
+  }
+
+  #addChildrenToquene(q: Quene<BTNode<T>>, currentNode: BTNode<T> | null) {
+    if (currentNode?.left) {
+      q.enque(currentNode?.left);
+    }
+
+    if (currentNode?.rigtht) {
+      q.enque(currentNode?.rigtht);
+    }
+  }
+
+  printNodes() {
+    let quene: Quene<BTNode<T>> = new Quene();
+
+    quene.enque(this.head);
+
+    while (!quene.isEmpty()) {
+      let curretNode: BTNode<T> | null = quene.deqnque();
+      this.#addChildrenToquene(quene, curretNode);
+      console.log(curretNode?.value);
+    }
+  }
+}
+
+export { BinaryTree, BinaryTreeWithRecursion };

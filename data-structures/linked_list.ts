@@ -304,6 +304,8 @@ class LinkedList<T> {
   }
 
   contains(value: T): number {
+    if (!this.#head) return -1;
+
     if (value == this.#head?.value) {
       return 0;
     }
