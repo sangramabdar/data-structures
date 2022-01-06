@@ -1,29 +1,52 @@
 class StackNode<T> {
-  key: number = 0;
   value: T;
+  next: StackNode<T> | null = null;
 
-  constructor(index: number, value: T) {
+  constructor(value: T) {
     this.value = value;
   }
 }
 
 class Stack<T> {
+  #length: number = 0;
   length: number = 0;
-  private stackNodes: StackNode<T>[] = new Array<StackNode<T>>();
+  #head: StackNode<T> | null = null;
 
   push(value: T) {
-    this.stackNodes.push(new StackNode(this.length, value));
-    this.length = this.stackNodes.length;
+    let temp: StackNode<T> = new StackNode(value);
+    if (!this.#head) {
+      this.#head = temp;
+      this.#length++;
+      this.length = this.#length;
+      return;
+    }
+
+    temp.next = this.#head;
+    this.#head = temp;
+
+    this.#length++;
+    this.length = this.#length;
   }
 
   pop(): T | null {
-    if (this.length == 0) {
-      console.log("stack is empty");
-      return null;
-    }
-    let value = this.stackNodes.pop()!!.value;
-    this.length = this.stackNodes.length;
+    if (!this.#head) return null;
+
+    let value = this.#head.value;
+    this.#head = this.#head.next;
+
+    this.#length--;
+    this.length = this.#length;
     return value;
+  }
+
+  top(): T | null {
+    if (!this.#head) return null;
+    return this.#head.value;
+  }
+
+  isEmpty(): boolean {
+    if (!this.#head) return true;
+    return false;
   }
 }
 

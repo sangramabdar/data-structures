@@ -1,35 +1,52 @@
-import LinkedList from "./linked_list";
+class QueneNode<T> {
+  value: T;
+  next: QueneNode<T> | null;
+
+  constructor(value: T) {
+    this.value = value;
+  }
+}
 
 class Quene<T> {
-  queneNodes: LinkedList<T> = new LinkedList<T>();
+  #length: number = 0;
   length: number = 0;
+  #head: QueneNode<T> | null = null;
+  #tail: QueneNode<T> | null = null;
 
   enque(value: T) {
-    this.queneNodes.add(value);
-    this.length++;
+    let temp = new QueneNode<T>(value);
+    if (!this.#head) {
+      this.#head = temp;
+      this.#tail = temp;
+      this.#length++;
+      this.length = this.#length;
+      return;
+    }
+
+    this.#tail!!.next = temp;
+    this.#tail = temp;
+    this.#length++;
+    this.length = this.#length;
   }
 
   deqnque(): T | null {
-    if (this.length === 0) {
-      console.log("quene is empty");
-      return null;
-    }
-    this.length--;
-    return this.queneNodes.deleteFirst();
+    if (!this.#head) return null;
+
+    let value = this.#head.value;
+
+    this.#head = this.#head.next;
+    this.#length--;
+    this.length = this.#length;
+    return value;
   }
 
-  top(): T | null {
-    if (this.length === 0) {
-      console.log("quene is empty");
-      return null;
-    }
-    return this.queneNodes.getHead();
+  front(): T | null {
+    if (!this.#head) return null;
+    return this.#head.value;
   }
 
   isEmpty(): boolean {
-    if (this.length === 0) {
-      return true;
-    }
+    if (!this.#head) return true;
     return false;
   }
 }

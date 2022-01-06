@@ -1,7 +1,12 @@
-import LinkedList from "./data-structures/linked_list";
+import Quene from "./data-structures/quene";
 
-let ll = new LinkedList<string>();
-for (let i = 0; i < 100; i++) {
-  ll.add(`${i}`);
+class Student {
+  name: string = "sam";
+  age: number = 22;
 }
-console.log(ll.getByIndex(ll.contains("1000000")));
+
+let q = new Quene<Student>();
+
+for (let i = 0; i < 10; i++) {
+  q.enque(new Student());
+}
