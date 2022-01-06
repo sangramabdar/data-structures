@@ -1,11 +1,11 @@
-import Quene from "./data-structures/quene";
+import Queue from "./data-structures/quene";
 
 class Student {
   name: string = "sam";
   age: number = 22;
 }
 
-let q = new Quene<Student>();
+let q = new Queue<Student>();
 
 for (let i = 0; i < 10; i++) {
   q.enque(new Student());

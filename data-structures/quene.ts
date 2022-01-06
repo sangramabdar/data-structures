@@ -1,20 +1,20 @@
-class QueneNode<T> {
+class QueueNode<T> {
   value: T;
-  next: QueneNode<T> | null;
+  next: QueueNode<T> | null;
 
   constructor(value: T) {
     this.value = value;
   }
 }
 
-class Quene<T> {
+class Queue<T> {
   #length: number = 0;
   length: number = 0;
-  #head: QueneNode<T> | null = null;
-  #tail: QueneNode<T> | null = null;
+  #head: QueueNode<T> | null = null;
+  #tail: QueueNode<T> | null = null;
 
   enque(value: T) {
-    let temp = new QueneNode<T>(value);
+    let temp = new QueueNode<T>(value);
     if (!this.#head) {
       this.#head = temp;
       this.#tail = temp;
@@ -51,4 +51,4 @@ class Quene<T> {
   }
 }
 
-export default Quene;
+export default Queue;

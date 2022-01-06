@@ -1,5 +1,5 @@
 import LinkedList from "./linked_list";
-import Quene from "./quene";
+import Queue from "./quene";
 
 class Graph {
   graphNodes: Array<LinkedList<number>> = new Array();
@@ -32,7 +32,7 @@ class Graph {
   bfs(startNode: number): number[] {
     if (!this.nodeValidation(startNode)) return [];
 
-    let q: Quene<number> = new Quene();
+    let q: Queue<number> = new Queue();
     let path: number[] = [];
     let visited: boolean[] = [];
 
