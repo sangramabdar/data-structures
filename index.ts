@@ -1,12 +1,13 @@
-import Queue from "./data-structures/quene";
+import Graph from "./data-structures/graph";
 
-class Student {
-  name: string = "sam";
-  age: number = 22;
-}
+let graph = new Graph();
 
-let q = new Queue<Student>();
-
-for (let i = 0; i < 10; i++) {
-  q.enque(new Student());
-}
+graph.addEdge(2, 4);
+graph.addEdge(1, 4);
+graph.addEdge(1, 5);
+graph.addEdge(4, 7);
+graph.addEdge(7, 10);
+graph.addEdge(10, 11);
+graph.addEdge(11, 100);
+console.log(graph.dfsWithNodes(1, 100));
+graph.bfs

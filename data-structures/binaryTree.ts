@@ -75,13 +75,13 @@ class BinaryTree<T> {
   }
 
   printNodes() {
-    let Queue: Queue<BTNode<T>> = new Queue();
+    let queue: Queue<BTNode<T>> = new Queue();
 
-    Queue.enque(this.head);
+    queue.enque(this.head);
 
-    while (!quene.isEmpty()) {
-      let curretNode: BTNode<T> | null = Queue.deqnque();
-      this.#addChildrenToquene(quene, curretNode);
+    while (!queue.isEmpty()) {
+      let curretNode: BTNode<T> | null = queue.deqnque();
+      this.#addChildrenToquene(queue, curretNode);
       console.log(curretNode?.value);
     }
   }
@@ -141,13 +141,13 @@ class BinaryTreeWithRecursion<T> {
   }
 
   printNodes() {
-    let Queue: Queue<BTNode<T>> = new Queue();
+    let queue: Queue<BTNode<T>> = new Queue();
 
-    Queue.enque(this.head);
+    queue.enque(this.head);
 
-    while (!quene.isEmpty()) {
-      let curretNode: BTNode<T> | null = Queue.deqnque();
-      this.#addChildrenToquene(quene, curretNode);
+    while (!queue.isEmpty()) {
+      let curretNode: BTNode<T> | null = queue.deqnque();
+      this.#addChildrenToquene(queue, curretNode);
       console.log(curretNode?.value);
     }
   }

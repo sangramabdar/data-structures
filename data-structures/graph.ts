@@ -29,106 +29,140 @@ class Graph {
     return true;
   }
 
-  bfs(startNode: number): number[] {
+  bfsWithNodes(startNode: number, endNode: number) {
+    if (!this.graphNodes[startNode] || !this.graphNodes[endNode])
+      return "node is not there";
+
+    let q: Queue<number> = new Queue();
+    let visited: boolean[] = [];
+
+    for (let i = 1; i <= this.totalNodes; i++) {
+      visited[i] = false;
+    }
+    let path: number[] = [];
+
+    visited[startNode] = true;
+    q.enque(startNode);
+    path.push(startNode);
+
+    //bfs
+    while (!q.isEmpty()) {
+      let node: number = q.deqnque()!!;
+      if (visited[endNode]) break;
+      for (let element of this.graphNodes[node].getAllValues()) {
+        if (!visited[element]) {
+          visited[element] = true;
+          q.enque(element);
+          path.push(element);
+        }
+      }
+    }
+    if (!visited[endNode]) {
+      return "path is not available";
+    }
+    console.log(path);
+    return "path is available";
+  }
+
+  bfs(startNode: number) {
     if (!this.nodeValidation(startNode)) return [];
 
     let q: Queue<number> = new Queue();
-    let path: number[] = [];
     let visited: boolean[] = [];
 
     for (let i = 1; i <= this.totalNodes; i++) {
       visited[i] = false;
     }
-    let currentNode = startNode;
 
-    while (true) {
-      if (!visited[currentNode]) {
-        visited[currentNode] = true;
-        q.enque(currentNode);
-        path.push(currentNode);
+    for (let i = 1; i < this.graphNodes.length; i++) {
+      if (!this.graphNodes[i]) continue;
 
-        while (!q.isEmpty()) {
-          let node: number = q.deqnque()!!;
-
-          for (let element of this.graphNodes[node].getAllValues()) {
-            if (!visited[element]) {
-              visited[element] = true;
-              path.push(element);
-              q.enque(element);
-            }
-          }
-        }
-        currentNode = this.checkFalseyValue(visited);
-        if (currentNode === -1) {
-          break;
-        }
-      }
-    }
-
-    for (let i = 1; i <= this.totalNodes; i++) {
       if (!visited[i]) {
         visited[i] = true;
         q.enque(i);
-        path.push(i);
 
+        //bfs
         while (!q.isEmpty()) {
           let node: number = q.deqnque()!!;
-
+          console.log(node);
+          if (!this.graphNodes[node]) continue;
           for (let element of this.graphNodes[node].getAllValues()) {
             if (!visited[element]) {
               visited[element] = true;
-              path.push(element);
               q.enque(element);
             }
           }
         }
       }
     }
-
-    return path;
   }
 
-  dfsRecursiveCall(node: number, visited: boolean[], path: number[]) {
+  #dfsRecursiveCall(node: number, visited: boolean[]) {
+    if (!this.graphNodes[node]) return;
+
     visited[node] = true;
-    path.push(node);
+    console.log(node);
+
     for (let element of this.graphNodes[node].getAllValues()) {
       if (!visited[element]) {
-        this.dfsRecursiveCall(element, visited, path);
+        this.#dfsRecursiveCall(element, visited);
       }
     }
   }
 
-  checkFalseyValue(visited: boolean[]): number {
-    for (let i = 1; i <= visited.length; i++) {
-      if (visited[i] === false) {
-        return i;
-      }
-    }
-    return -1;
-  }
+  dfsWithNodes(startNode: number, endNode: number) {
+    if (!this.graphNodes[startNode] || !this.graphNodes[endNode])
+      return "node is not there";
 
-  dfs(startNode: number) {
-    if (!this.nodeValidation(startNode)) return [];
-
-    let path: number[] = [];
     let visited: boolean[] = [];
 
     for (let i = 1; i <= this.totalNodes; i++) {
       visited[i] = false;
     }
-    let currentNode = startNode;
-    while (true) {
-      if (!visited[currentNode]) {
-        this.dfsRecursiveCall(currentNode, visited, path);
-        currentNode = this.checkFalseyValue(visited);
-        if (currentNode === -1) {
-          console.log("break");
-          break;
-        }
+    let path: number[] = [];
+
+    this.#dfsForNode(startNode, endNode, visited, path);
+
+    if (!visited[endNode]) return "path is not available";
+
+    console.log(path);
+    return "path is available";
+  }
+
+  #dfsForNode(
+    node: number,
+    endNode: number,
+    visited: boolean[],
+    path: number[]
+  ) {
+    if (visited[endNode]) return;
+
+    visited[node] = true;
+    path.push(node);
+
+    for (let element of this.graphNodes[node].getAllValues()) {
+      if (!visited[element]) {
+        this.#dfsForNode(element, endNode, visited, path);
       }
     }
+  }
+  dfs(startNode: number) {
+    if (!this.nodeValidation(startNode)) return;
 
-    return path;
+    let visited: boolean[] = [];
+
+    for (let i = 1; i <= this.totalNodes; i++) {
+      visited[i] = false;
+    }
+
+    for (let i = 1; i < this.graphNodes.length; i++) {
+      if (!this.graphNodes[i]) continue;
+
+      if (!visited[i]) {
+        //dfs
+        this.#dfsRecursiveCall(i, visited);
+      }
+    }
   }
 }
 
