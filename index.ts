@@ -1,13 +1,35 @@
 import Graph from "./data-structures/graph";
 
-let graph = new Graph();
+let graph = new Graph<string>();
 
-graph.addEdge(2, 4);
-graph.addEdge(1, 4);
-graph.addEdge(1, 5);
-graph.addEdge(4, 7);
-graph.addEdge(7, 10);
-graph.addEdge(10, 11);
-graph.addEdge(11, 100);
-console.log(graph.dfsWithNodes(1, 100));
-graph.bfs
+graph.addEdge({ index: 12, value: "puneewe" }, { index: 11, value: "mumbai" });
+graph.addEdge({ index: 101, value: "Delhi" }, { index: 110, value: "chennai" });
+graph.addEdge({ index: 11, value: "mumbai" }, { index: 110, value: "chennai" });
+graph.addEdge({ index: 0, value: "pune" }, { index: 110, value: "chennai" });
+// console.log(
+//   graph.dfsWithNodes(
+//     {
+//       index: 0,
+//       value: "pune",
+//     },
+//     {
+//       index: 110,
+//       value: "delhi",
+//     }
+//   )
+// );
+
+// console.log(
+//   graph.bfsWithNodes(
+//     {
+//       index: 0,
+//       value: "pune",
+//     },
+//     {
+//       index: 110,
+//       value: "chennai",
+//     }
+//   )
+// );
+
+graph.dfs();

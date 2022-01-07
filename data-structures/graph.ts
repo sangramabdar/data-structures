@@ -1,24 +1,31 @@
 import LinkedList from "./linked_list";
 import Queue from "./quene";
 
-class Graph {
-  graphNodes: Array<LinkedList<number>> = new Array();
+class GraphNode<T> {
+  index: number;
+  value?: T;
+}
 
+class Graph<E> {
+  graphNodes: Array<LinkedList<GraphNode<E>>> = new Array();
+  onlyNodes: Array<GraphNode<E>> = [];
   totalNodes: number = 0;
 
-  addEdge(firstNode: number, secondNode: number) {
-    if (!this.graphNodes[firstNode]) {
-      this.graphNodes[firstNode] = new LinkedList();
+  addEdge(firstNode: GraphNode<E>, secondNode: GraphNode<E>) {
+    if (!this.graphNodes[firstNode.index]) {
+      this.onlyNodes[firstNode.index] = firstNode;
+      this.graphNodes[firstNode.index] = new LinkedList();
       this.totalNodes++;
     }
 
-    if (!this.graphNodes[secondNode]) {
-      this.graphNodes[secondNode] = new LinkedList();
+    if (!this.graphNodes[secondNode.index]) {
+      this.onlyNodes[secondNode.index] = secondNode;
+      this.graphNodes[secondNode.index] = new LinkedList();
       this.totalNodes++;
     }
 
-    this.graphNodes[firstNode].add(secondNode);
-    this.graphNodes[secondNode].add(firstNode);
+    this.graphNodes[firstNode.index].add(secondNode);
+    this.graphNodes[secondNode.index].add(firstNode);
   }
 
   nodeValidation(node: number) {
@@ -29,138 +36,147 @@ class Graph {
     return true;
   }
 
-  bfsWithNodes(startNode: number, endNode: number) {
-    if (!this.graphNodes[startNode] || !this.graphNodes[endNode])
+  bfsWithNodes(startNode: GraphNode<E>, endNode: GraphNode<E>) {
+    if (!this.graphNodes[startNode.index] || !this.graphNodes[endNode.index])
       return "node is not there";
 
-    let q: Queue<number> = new Queue();
+    let q: Queue<GraphNode<E>> = new Queue();
     let visited: boolean[] = [];
 
-    for (let i = 1; i <= this.totalNodes; i++) {
+    for (let i = 0; i < this.graphNodes.length; i++) {
       visited[i] = false;
     }
-    let path: number[] = [];
+    let path: any = [];
 
-    visited[startNode] = true;
+    visited[startNode.index] = true;
     q.enque(startNode);
     path.push(startNode);
 
     //bfs
     while (!q.isEmpty()) {
-      let node: number = q.deqnque()!!;
-      if (visited[endNode]) break;
-      for (let element of this.graphNodes[node].getAllValues()) {
-        if (!visited[element]) {
-          visited[element] = true;
+      let node = q.deqnque()!!;
+      if (visited[endNode.index]) break;
+      for (let element of this.graphNodes[node.index].getAllValues()) {
+        if (!visited[element.index]) {
+          visited[element.index] = true;
           q.enque(element);
           path.push(element);
         }
       }
     }
-    if (!visited[endNode]) {
+
+    if (!visited[endNode.index]) {
       return "path is not available";
     }
     console.log(path);
     return "path is available";
   }
 
-  bfs(startNode: number) {
-    if (!this.nodeValidation(startNode)) return [];
-
-    let q: Queue<number> = new Queue();
+  bfs() {
+    let q: Queue<GraphNode<E>> = new Queue();
     let visited: boolean[] = [];
 
-    for (let i = 1; i <= this.totalNodes; i++) {
+    for (let i = 0; i < this.graphNodes.length; i++) {
       visited[i] = false;
     }
 
-    for (let i = 1; i < this.graphNodes.length; i++) {
-      if (!this.graphNodes[i]) continue;
+    let mappedKeys: {} = {};
+    for (let j = 0; j < this.onlyNodes.length; j++) {
+      if (this.onlyNodes[j]) mappedKeys[j] = j;
+    }
 
-      if (!visited[i]) {
-        visited[i] = true;
-        q.enque(i);
+    for (let key in mappedKeys) {
+      let index = mappedKeys[key];
+      console.log(index);
+      if (!this.graphNodes[index]) continue;
+
+      if (!visited[index]) {
+        visited[index] = true;
+        q.enque(this.onlyNodes[index]);
 
         //bfs
         while (!q.isEmpty()) {
-          let node: number = q.deqnque()!!;
-          console.log(node);
-          if (!this.graphNodes[node]) continue;
-          for (let element of this.graphNodes[node].getAllValues()) {
-            if (!visited[element]) {
-              visited[element] = true;
+          let node = q.deqnque()!!;
+          console.log(node.value);
+          for (let element of this.graphNodes[node.index].getAllValues()) {
+            if (!visited[element.index]) {
+              visited[element.index] = true;
               q.enque(element);
             }
           }
         }
       }
     }
+    console.log(visited);
   }
 
-  #dfsRecursiveCall(node: number, visited: boolean[]) {
-    if (!this.graphNodes[node]) return;
+  dfs() {
+    let visited: boolean[] = [];
 
-    visited[node] = true;
+    for (let i = 0; i < this.graphNodes.length; i++) {
+      visited[i] = false;
+    }
+
+    let mappedKeys: {} = {};
+    for (let j = 0; j < this.onlyNodes.length; j++) {
+      if (this.onlyNodes[j]) mappedKeys[j] = j;
+    }
+
+    for (let key in mappedKeys) {
+      let index = mappedKeys[key];
+
+      if (!visited[index]) {
+        console.log(index);
+        //dfs
+        this.#dfsRecursiveCall(this.onlyNodes[index], visited);
+      }
+    }
+  }
+
+  #dfsRecursiveCall(node: GraphNode<E>, visited: boolean[]) {
+    visited[node.index] = true;
     console.log(node);
 
-    for (let element of this.graphNodes[node].getAllValues()) {
-      if (!visited[element]) {
+    for (let element of this.graphNodes[node.index].getAllValues()) {
+      if (!visited[element.index]) {
         this.#dfsRecursiveCall(element, visited);
       }
     }
   }
 
-  dfsWithNodes(startNode: number, endNode: number) {
-    if (!this.graphNodes[startNode] || !this.graphNodes[endNode])
+  dfsWithNodes(startNode: GraphNode<E>, endNode: GraphNode<E>) {
+    if (!this.graphNodes[startNode.index] || !this.graphNodes[endNode.index])
       return "node is not there";
 
     let visited: boolean[] = [];
 
-    for (let i = 1; i <= this.totalNodes; i++) {
+    for (let i = 0; i < this.graphNodes.length; i++) {
       visited[i] = false;
     }
-    let path: number[] = [];
+    let path: any = [];
 
     this.#dfsForNode(startNode, endNode, visited, path);
 
-    if (!visited[endNode]) return "path is not available";
+    if (!visited[endNode.index]) return "path is not available";
 
     console.log(path);
     return "path is available";
   }
 
   #dfsForNode(
-    node: number,
-    endNode: number,
+    node: GraphNode<E>,
+    endNode: GraphNode<E>,
     visited: boolean[],
-    path: number[]
+    path: any
   ) {
-    if (visited[endNode]) return;
+    if (visited[endNode.index]) return;
 
-    visited[node] = true;
+    visited[node.index] = true;
     path.push(node);
 
-    for (let element of this.graphNodes[node].getAllValues()) {
-      if (!visited[element]) {
+    for (let element of this.graphNodes[node.index].getAllValues()) {
+      if (!visited[element.index]) {
         this.#dfsForNode(element, endNode, visited, path);
-      }
-    }
-  }
-  dfs(startNode: number) {
-    if (!this.nodeValidation(startNode)) return;
-
-    let visited: boolean[] = [];
-
-    for (let i = 1; i <= this.totalNodes; i++) {
-      visited[i] = false;
-    }
-
-    for (let i = 1; i < this.graphNodes.length; i++) {
-      if (!this.graphNodes[i]) continue;
-
-      if (!visited[i]) {
-        //dfs
-        this.#dfsRecursiveCall(i, visited);
       }
     }
   }
