@@ -13,7 +13,7 @@ class Queue<T> {
   #head: QueueNode<T> | null = null;
   #tail: QueueNode<T> | null = null;
 
-  enque(value: T) {
+  enqueue(value: T) {
     let temp = new QueueNode<T>(value);
     if (!this.#head) {
       this.#head = temp;
@@ -29,7 +29,7 @@ class Queue<T> {
     this.length = this.#length;
   }
 
-  deqnque(): T | null {
+  dequeue(): T | null {
     if (!this.#head) return null;
 
     let value = this.#head.value;

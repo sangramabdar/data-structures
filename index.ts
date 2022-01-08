@@ -1,11 +1,7 @@
-import LinkedList from "./data-structures/linked_list";
+let map = { "1": 1 };
 
-let ll = new LinkedList<number>();
-
-for (let i = 1; i <= 10; i++) {
-  ll.add(i);
+if (map[2]) {
+  console.log(map[1]);
+} else {
+  console.log("not");
 }
-
-ll.reverserLinkedList();
-ll.printNodes();
-console.log(ll.getAllValues());

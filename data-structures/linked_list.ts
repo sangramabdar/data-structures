@@ -56,7 +56,7 @@ class LinkedList<T> {
 
     if (!this.#head) {
       this.#head = node;
-      this.#tail = this.#head;
+      this.#tail = node;
       this.#length++;
       this.length = this.#length;
       return;
@@ -75,15 +75,14 @@ class LinkedList<T> {
 
     if (!this.#tail) {
       this.#tail = node;
-      this.#head = this.#tail;
-
+      this.#head = node;
       this.#length++;
       this.length = this.#length;
       return;
     }
 
-    node.prevoius = this.#tail;
     this.#tail.next = node;
+    node.prevoius = this.#tail;
     this.#tail = node;
 
     this.#length++;
@@ -140,14 +139,13 @@ class LinkedList<T> {
     let tempNode: LinkedListNode<T> | null = this.#head!!.next;
     localIndex++;
 
-    while (tempNode) {
+    while (tempNode != null) {
       if (index === localIndex) {
         return tempNode;
       }
       localIndex++;
       tempNode = tempNode!!.next;
     }
-
     return null;
   }
 
@@ -177,7 +175,7 @@ class LinkedList<T> {
   }
 
   getHead(): T | null {
-    if (!this.#head) return this.#head!!.value;
+    if (this.#head) return this.#head!!.value;
     return null;
   }
 
@@ -279,7 +277,6 @@ class LinkedList<T> {
       let value = this.#tail?.value;
       this.#tail = this.#tail?.prevoius;
       this.#tail.next = null;
-
       this.#length--;
       this.length = this.#length;
       return value;
@@ -317,7 +314,7 @@ class LinkedList<T> {
     let tempNode: LinkedListNode<T> | null = this.#head!!.next;
     let localIndex: number = 1;
 
-    while (tempNode) {
+    while (tempNode != null) {
       if (tempNode?.value == value) {
         return localIndex;
       }

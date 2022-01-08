@@ -49,17 +49,17 @@ class Graph<E> {
     let path: any = [];
 
     visited[startNode.index] = true;
-    q.enque(startNode);
+    q.enqueue(startNode);
     path.push(startNode);
 
     //bfs
     while (!q.isEmpty()) {
-      let node = q.deqnque()!!;
+      let node = q.dequeue()!!;
       if (visited[endNode.index]) break;
       for (let element of this.graphNodes[node.index].getAllValues()) {
         if (!visited[element.index]) {
           visited[element.index] = true;
-          q.enque(element);
+          q.enqueue(element);
           path.push(element);
         }
       }
@@ -81,27 +81,27 @@ class Graph<E> {
     }
 
     let mappedKeys: {} = {};
+
     for (let j = 0; j < this.onlyNodes.length; j++) {
       if (this.onlyNodes[j]) mappedKeys[j] = j;
     }
 
     for (let key in mappedKeys) {
       let index = mappedKeys[key];
-      console.log(index);
-      if (!this.graphNodes[index]) continue;
 
       if (!visited[index]) {
         visited[index] = true;
-        q.enque(this.onlyNodes[index]);
+        q.enqueue(this.onlyNodes[index]);
 
         //bfs
         while (!q.isEmpty()) {
-          let node = q.deqnque()!!;
+          let node = q.dequeue()!!;
           console.log(node.value);
+
           for (let element of this.graphNodes[node.index].getAllValues()) {
             if (!visited[element.index]) {
               visited[element.index] = true;
-              q.enque(element);
+              q.enqueue(element);
             }
           }
         }
@@ -118,6 +118,7 @@ class Graph<E> {
     }
 
     let mappedKeys: {} = {};
+
     for (let j = 0; j < this.onlyNodes.length; j++) {
       if (this.onlyNodes[j]) mappedKeys[j] = j;
     }
@@ -126,7 +127,6 @@ class Graph<E> {
       let index = mappedKeys[key];
 
       if (!visited[index]) {
-        console.log(index);
         //dfs
         this.#dfsRecursiveCall(this.onlyNodes[index], visited);
       }
@@ -135,7 +135,7 @@ class Graph<E> {
 
   #dfsRecursiveCall(node: GraphNode<E>, visited: boolean[]) {
     visited[node.index] = true;
-    console.log(node);
+    console.log(node.value);
 
     for (let element of this.graphNodes[node.index].getAllValues()) {
       if (!visited[element.index]) {
