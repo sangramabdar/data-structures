@@ -337,6 +337,26 @@ class LinkedList<T> {
       tempNode = tempNode?.next;
     }
   }
+
+  reverserLinkedList() {
+    let current = this.#head;
+    let previous: LinkedListNode<T> | null = null;
+    let tail = this.#tail;
+    let head = this.#head;
+
+    while (current != null) {
+      let next = current.next;
+
+      current!!.next = previous;
+      current.prevoius = next;
+
+      previous = current;
+      current = next;
+    }
+
+    this.#head = tail;
+    this.#tail = head;
+  }
 }
 
 export default LinkedList;

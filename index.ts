@@ -1,35 +1,11 @@
-import Graph from "./data-structures/graph";
+import LinkedList from "./data-structures/linked_list";
 
-let graph = new Graph<string>();
+let ll = new LinkedList<number>();
 
-graph.addEdge({ index: 12, value: "puneewe" }, { index: 11, value: "mumbai" });
-graph.addEdge({ index: 101, value: "Delhi" }, { index: 110, value: "chennai" });
-graph.addEdge({ index: 11, value: "mumbai" }, { index: 110, value: "chennai" });
-graph.addEdge({ index: 0, value: "pune" }, { index: 110, value: "chennai" });
-// console.log(
-//   graph.dfsWithNodes(
-//     {
-//       index: 0,
-//       value: "pune",
-//     },
-//     {
-//       index: 110,
-//       value: "delhi",
-//     }
-//   )
-// );
+for (let i = 1; i <= 10; i++) {
+  ll.add(i);
+}
 
-// console.log(
-//   graph.bfsWithNodes(
-//     {
-//       index: 0,
-//       value: "pune",
-//     },
-//     {
-//       index: 110,
-//       value: "chennai",
-//     }
-//   )
-// );
-
-graph.dfs();
+ll.reverserLinkedList();
+ll.printNodes();
+console.log(ll.getAllValues());
