@@ -17,4 +17,31 @@ function QuickSort(array: number[]): number[] {
   }
 }
 
-console.log(QuickSort([1, -2, 1100, 22, -22]));
+function Partition(arr: number[], start: number, end: number) {
+  let pivot = arr[start];
+  let i = start;
+  let j = end;
+  while (i < j) {
+    while (arr[i] <= pivot) i++;
+    while (arr[j] > pivot) j--;
+
+    if (i < j) {
+      let temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+  }
+
+  let temp = arr[j];
+  arr[j] = pivot;
+  arr[start] = temp;
+  return j;
+}
+
+function QuickSort2(arr: number[], start: number, end: number) {
+  if (start < end) {
+    let index = Partition(arr, start, end);
+    QuickSort2(arr, start, index - 1);
+    QuickSort2(arr, index + 1, end);
+  }
+}

@@ -1,7 +1,10 @@
-let map = { "1": 1 };
+import mergeSort from "./algorithms/mergeSort";
 
-if (map[2]) {
-  console.log(map[1]);
-} else {
-  console.log("not");
+let a: number[] = [];
+
+for (let i = 1; i <= 100; i++) {
+  a[i - 1] = i;
 }
+// console.log(object)
+mergeSort(a);
+console.log(a);
