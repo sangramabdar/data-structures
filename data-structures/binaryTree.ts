@@ -10,13 +10,13 @@ class BTNode<T> {
 }
 
 class BinaryTree<T> {
-  head: BTNode<T>;
+  root: BTNode<T>;
   constructor(value: T) {
-    this.head = new BTNode<T>(value);
+    this.root = new BTNode<T>(value);
   }
 
   addNode(value: T) {
-    let currentNode: BTNode<T> = this.head;
+    let currentNode: BTNode<T> = this.root;
     while (true) {
       if (value < currentNode.value) {
         if (!currentNode?.left) {
@@ -39,7 +39,7 @@ class BinaryTree<T> {
   }
 
   getValue(value: T): T | null {
-    let currentNode: BTNode<T> = this.head;
+    let currentNode: BTNode<T> = this.root;
 
     while (true) {
       if (value === currentNode?.value) {
@@ -67,7 +67,7 @@ class BinaryTree<T> {
   printNodes() {
     let queue: Queue<BTNode<T>> = new Queue();
 
-    queue.enqueue(this.head);
+    queue.enqueue(this.root);
 
     while (!queue.isEmpty()) {
       let curretNode: BTNode<T> | null = queue.dequeue();
@@ -84,31 +84,35 @@ class BinaryTree<T> {
 }
 
 class BinaryTreeWithRecursion<T> {
-  head: BTNode<T>;
+  root: BTNode<T>;
 
   constructor(value: T) {
-    this.head = new BTNode<T>(value);
+    this.root = new BTNode<T>(value);
   }
 
-  addNode(value: T, node: BTNode<T> | null = this.head) {
+  #addNode(value: T, node: BTNode<T> | null = this.root) {
     if (value < node!!.value) {
       if (!node!!.left) {
         node!!.left = new BTNode(value);
         return;
       } else {
-        return this.addNode(value, node!!.left);
+        return this.#addNode(value, node!!.left);
       }
     } else {
       if (!node!!.rigtht) {
         node!!.rigtht = new BTNode(value);
         return;
       } else {
-        return this.addNode(value, node!!.rigtht);
+        return this.#addNode(value, node!!.rigtht);
       }
     }
   }
 
-  getValue(value: T, node: BTNode<T> = this.head) {
+  addNode(value: T) {
+    this.#addNode(value, this.root);
+  }
+
+  #find(value: T, node: BTNode<T>) {
     if (value === node.value) {
       return node.value;
     }
@@ -116,20 +120,25 @@ class BinaryTreeWithRecursion<T> {
     if (value < node.value) {
       if (!node.left) return null;
       else {
-        return this.getValue(value, node.left);
+        return this.#find(value, node.left);
       }
     } else {
       if (!node.rigtht) return null;
       else {
-        return this.getValue(value, node.rigtht);
+        return this.#find(value, node.rigtht);
       }
     }
+    return null;
+  }
+
+  find(value: T): T | null {
+    return this.#find(value, this.root);
   }
 
   printNodes() {
     let queue: Queue<BTNode<T>> = new Queue();
 
-    queue.enqueue(this.head);
+    queue.enqueue(this.root);
 
     while (!queue.isEmpty()) {
       let curretNode: BTNode<T> | null = queue.dequeue();

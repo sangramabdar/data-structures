@@ -1,10 +1,5 @@
-import mergeSort from "./algorithms/mergeSort";
+import { BinaryTreeWithRecursion } from "./data-structures/binaryTree";
 
-let a: number[] = [];
-
-for (let i = 1; i <= 100; i++) {
-  a[i - 1] = i;
-}
-// console.log(object)
-mergeSort(a);
-console.log(a);
+let bt = new BinaryTreeWithRecursion(2);
+bt.addNode(2);
+console.log(bt.find(22));
