@@ -1,5 +1,6 @@
-import { BinaryTreeWithRecursion } from "./data-structures/binaryTree";
+import { BinaryTree } from "./data-structures/binaryTree";
 
-let bt = new BinaryTreeWithRecursion(2);
-bt.addNode(2);
-console.log(bt.find(22));
+let b = new BinaryTree<number>(1);
+console.log(b);
+console.log(b.remove(1));
+console.log(b);

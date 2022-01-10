@@ -8,6 +8,7 @@ class LinkedListNode<T> {
   }
 }
 
+//doubly-linkedlist implementation
 class LinkedList<T> {
   #head: LinkedListNode<T> | null = null;
   #tail: LinkedListNode<T> | null = null;
@@ -300,7 +301,7 @@ class LinkedList<T> {
     return listOfValues;
   }
 
-  contains(value: T): number {
+  indexOf(value: T): number {
     if (!this.#head) return -1;
 
     if (value == this.#head?.value) {

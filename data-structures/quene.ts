@@ -49,6 +49,10 @@ class Queue<T> {
     if (!this.#head) return true;
     return false;
   }
+
+  size() {
+    return this.#length;
+  }
 }
 
 export default Queue;

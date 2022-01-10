@@ -39,7 +39,7 @@ class Stack<T> {
     return value;
   }
 
-  top(): T | null {
+  peek(): T | null {
     if (!this.#head) return null;
     return this.#head.value;
   }
