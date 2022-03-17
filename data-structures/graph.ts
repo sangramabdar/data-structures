@@ -4,6 +4,11 @@ import Queue from "./quene";
 class GraphNode<T> {
   index: number;
   value?: T;
+
+  constructor(value: T, index: number) {
+    this.index = index;
+    this.value = value;
+  }
 }
 
 class Graph<E> {
@@ -19,11 +24,15 @@ class Graph<E> {
 
   addEdge(firstNode: GraphNode<E>, secondNode: GraphNode<E>) {
     if (!this.graph[firstNode.index]) {
-      this.addNode(firstNode);
+      this.graph[firstNode.index] = new LinkedList();
+      this.nodes[firstNode.index] = firstNode;
+      this.totalNodes++;
     }
 
     if (!this.graph[secondNode.index]) {
-      this.addNode(secondNode);
+      this.graph[secondNode.index] = new LinkedList();
+      this.nodes[secondNode.index] = secondNode;
+      this.totalNodes++;
     }
 
     this.graph[firstNode.index].add(secondNode);
@@ -86,20 +95,25 @@ class Graph<E> {
     let mappedKeys: {} = this.getIndexes();
 
     for (let key in mappedKeys) {
+      // console.log("key - ", key);
       let index = mappedKeys[key];
 
       if (!visited[index]) {
-        visited[index] = true;
         q.enqueue(this.nodes[index]);
 
         //bfs
         while (!q.isEmpty()) {
           let node = q.dequeue()!!;
+
+          //to check child is visited or not
+          if (visited[node.index]) continue;
+          visited[node.index] = true;
+
           console.log(node.value);
 
           for (let element of this.graph[node.index].getAllValues()) {
+            console.log("checking for : ", element.index);
             if (!visited[element.index]) {
-              visited[element.index] = true;
               q.enqueue(element);
             }
           }
@@ -129,8 +143,8 @@ class Graph<E> {
 
   #dfsRecursiveCall(node: GraphNode<E>, visited: boolean[]) {
     visited[node.index] = true;
-    console.log(node.value);
 
+    console.log(node.value);
     for (let element of this.graph[node.index].getAllValues()) {
       if (!visited[element.index]) {
         this.#dfsRecursiveCall(element, visited);
@@ -176,4 +190,4 @@ class Graph<E> {
   // }
 }
 
-export default Graph;
+export { Graph, GraphNode };

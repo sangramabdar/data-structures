@@ -8,6 +8,7 @@ function twoNumberSum(array: number[], target: number) {
     }
     tableOfResults[element] = true;
   }
+  return -1;
 }
 
 export default twoNumberSum;

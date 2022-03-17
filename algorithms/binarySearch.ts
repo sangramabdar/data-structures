@@ -3,7 +3,6 @@ function binarySearch<T>(items: T[], value: T): number {
   let end = items.length - 1;
   while (start <= end) {
     let mid = start + parseInt(`${(end - start) / 2}`);
-    console.log(mid);
     if (items[mid] === value) return mid;
 
     if (value < items[mid]) {

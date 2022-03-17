@@ -130,12 +130,12 @@ class BinaryTree<T> {
       return null;
     }
 
-    let rightMostNode: BTNode<T> = this.findRightMost(node.left);
+    let rightMostNode: BTNode<T> = this.findRightMostNode(node.left);
     rightMostNode.right = node.right;
     return node.left;
   }
 
-  findRightMost(node: BTNode<T>): BTNode<T> {
+  findRightMostNode(node: BTNode<T>): BTNode<T> {
     let currentNode: BTNode<T> | null = node;
 
     while (currentNode.right !== null) {
@@ -150,14 +150,14 @@ class BinaryTree<T> {
     queue.enqueue(this.root as BTNode<T>);
 
     while (!queue.isEmpty()) {
-      let curretNode: BTNode<T> | null = queue.dequeue();
-      console.log(curretNode?.value);
-      if (curretNode?.left) {
-        queue.enqueue(curretNode.left);
+      let currentNode: BTNode<T> | null = queue.dequeue();
+      console.log(currentNode?.value);
+      if (currentNode?.left) {
+        queue.enqueue(currentNode.left);
       }
 
-      if (curretNode?.right) {
-        queue.enqueue(curretNode.right);
+      if (currentNode?.right) {
+        queue.enqueue(currentNode.right);
       }
     }
   }

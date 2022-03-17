@@ -8,50 +8,47 @@ class QueueNode<T> {
 }
 
 class Queue<T> {
-  #length: number = 0;
-  length: number = 0;
-  #head: QueueNode<T> | null = null;
-  #tail: QueueNode<T> | null = null;
+  #size: number = 0;
+  size: number = 0;
+  #front: QueueNode<T> | null = null;
+  #back: QueueNode<T> | null = null;
 
   enqueue(value: T) {
-    let temp = new QueueNode<T>(value);
-    if (!this.#head) {
-      this.#head = temp;
-      this.#tail = temp;
-      this.#length++;
-      this.length = this.#length;
+    let current = new QueueNode<T>(value);
+
+    if (!this.#front) {
+      this.#front = current;
+      this.#back = current;
+      this.#size++;
+      this.size = this.#size;
       return;
     }
 
-    this.#tail!!.next = temp;
-    this.#tail = temp;
-    this.#length++;
-    this.length = this.#length;
+    this.#back!!.next = current;
+    this.#back = current;
+    this.#size++;
+    this.size = this.#size;
   }
 
   dequeue(): T | null {
-    if (!this.#head) return null;
+    if (!this.#front) return null;
 
-    let value = this.#head.value;
+    let value = this.#front.value;
+    this.#front = this.#front.next;
+    this.#size--;
+    this.size = this.#size;
 
-    this.#head = this.#head.next;
-    this.#length--;
-    this.length = this.#length;
     return value;
   }
 
   front(): T | null {
-    if (!this.#head) return null;
-    return this.#head.value;
+    if (!this.#front) return null;
+    return this.#front.value;
   }
 
   isEmpty(): boolean {
-    if (!this.#head) return true;
+    if (!this.#front) return true;
     return false;
-  }
-
-  size() {
-    return this.#length;
   }
 }
 

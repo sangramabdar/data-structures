@@ -8,44 +8,43 @@ class StackNode<T> {
 }
 
 class Stack<T> {
-  #length: number = 0;
-  length: number = 0;
-  #head: StackNode<T> | null = null;
+  #size: number = 0;
+  size: number = 0;
+  #top: StackNode<T> | null = null;
 
   push(value: T) {
-    let temp: StackNode<T> = new StackNode(value);
-    if (!this.#head) {
-      this.#head = temp;
-      this.#length++;
-      this.length = this.#length;
+    let current: StackNode<T> = new StackNode(value);
+    if (!this.#top) {
+      this.#top = current;
+      this.#size++;
+      this.size = this.#size;
       return;
     }
 
-    temp.next = this.#head;
-    this.#head = temp;
-
-    this.#length++;
-    this.length = this.#length;
+    current.next = this.#top;
+    this.#top = current;
+    this.#size++;
+    this.size = this.#size;
   }
 
   pop(): T | null {
-    if (!this.#head) return null;
+    if (!this.#top) return null;
 
-    let value = this.#head.value;
-    this.#head = this.#head.next;
+    let value = this.#top.value;
+    this.#top = this.#top.next;
 
-    this.#length--;
-    this.length = this.#length;
+    this.#size--;
+    this.size = this.#size;
     return value;
   }
 
   peek(): T | null {
-    if (!this.#head) return null;
-    return this.#head.value;
+    if (!this.#top) return null;
+    return this.#top.value;
   }
 
   isEmpty(): boolean {
-    if (!this.#head) return true;
+    if (!this.#top) return true;
     return false;
   }
 }
