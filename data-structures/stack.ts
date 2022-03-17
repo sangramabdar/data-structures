@@ -9,7 +9,6 @@ class StackNode<T> {
 
 class Stack<T> {
   #size: number = 0;
-  size: number = 0;
   #top: StackNode<T> | null = null;
 
   push(value: T) {
@@ -17,14 +16,12 @@ class Stack<T> {
     if (!this.#top) {
       this.#top = current;
       this.#size++;
-      this.size = this.#size;
       return;
     }
 
     current.next = this.#top;
     this.#top = current;
     this.#size++;
-    this.size = this.#size;
   }
 
   pop(): T | null {
@@ -32,9 +29,8 @@ class Stack<T> {
 
     let value = this.#top.value;
     this.#top = this.#top.next;
-
     this.#size--;
-    this.size = this.#size;
+
     return value;
   }
 
@@ -46,6 +42,10 @@ class Stack<T> {
   isEmpty(): boolean {
     if (!this.#top) return true;
     return false;
+  }
+
+  get size() {
+    return this.#size;
   }
 }
 

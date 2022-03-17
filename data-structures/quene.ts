@@ -9,7 +9,6 @@ class QueueNode<T> {
 
 class Queue<T> {
   #size: number = 0;
-  size: number = 0;
   #front: QueueNode<T> | null = null;
   #back: QueueNode<T> | null = null;
 
@@ -20,14 +19,12 @@ class Queue<T> {
       this.#front = current;
       this.#back = current;
       this.#size++;
-      this.size = this.#size;
       return;
     }
 
     this.#back!!.next = current;
     this.#back = current;
     this.#size++;
-    this.size = this.#size;
   }
 
   dequeue(): T | null {
@@ -36,7 +33,6 @@ class Queue<T> {
     let value = this.#front.value;
     this.#front = this.#front.next;
     this.#size--;
-    this.size = this.#size;
 
     return value;
   }
@@ -49,6 +45,10 @@ class Queue<T> {
   isEmpty(): boolean {
     if (!this.#front) return true;
     return false;
+  }
+
+  get size() {
+    return this.#size;
   }
 }
 

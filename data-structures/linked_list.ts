@@ -1,36 +1,33 @@
 class LinkedListNode<T> {
   value: T | null;
   next: LinkedListNode<T> | null = null;
-  prevoius: LinkedListNode<T> | null = null;
+  previous: LinkedListNode<T> | null = null;
 
   constructor(value: T) {
     this.value = value;
   }
 }
 
-//doubly-linkedlist implementation
+//doubly-linkedList implementation
 class LinkedList<T> {
   #head: LinkedListNode<T> | null = null;
   #tail: LinkedListNode<T> | null = null;
 
   #length: number = 0;
-  length: number = 0;
 
   add(value: T) {
     if (!this.#head) {
-      this.inserFirst(value);
+      this.insertFirst(value);
       return;
     }
     this.insertLast(value);
   }
 
-  insertAtindex(index: number, newValue: T) {
+  insertAtIndex(index: number, newValue: T) {
     if (!this.#isValidIndex(index)) return;
 
-    let localIndex = 0;
-
-    if (index === localIndex) {
-      this.inserFirst(newValue);
+    if (index === 0) {
+      this.insertFirst(newValue);
       return;
     }
 
@@ -40,35 +37,32 @@ class LinkedList<T> {
     }
 
     let tempNode = this.#getNodeByIndex(index);
-    let previosNode = tempNode!!.prevoius;
+    let previousNode = tempNode!!.previous;
     let node = new LinkedListNode(newValue);
 
-    node.prevoius = previosNode;
-    previosNode!!.next = node;
+    node.previous = previousNode;
+    previousNode!!.next = node;
     node.next = tempNode;
-    tempNode!!.prevoius = node;
+    tempNode!!.previous = node;
 
     this.#length++;
-    this.length = this.#length;
   }
 
-  inserFirst(value: T) {
+  insertFirst(value: T) {
     let node = new LinkedListNode<T>(value);
 
     if (!this.#head) {
       this.#head = node;
       this.#tail = node;
       this.#length++;
-      this.length = this.#length;
       return;
     }
 
     node.next = this.#head;
-    this.#head.prevoius = node;
+    this.#head.previous = node;
     this.#head = node;
 
     this.#length++;
-    this.length = this.#length;
   }
 
   insertLast(value: T) {
@@ -78,16 +72,14 @@ class LinkedList<T> {
       this.#tail = node;
       this.#head = node;
       this.#length++;
-      this.length = this.#length;
       return;
     }
 
     this.#tail.next = node;
-    node.prevoius = this.#tail;
+    node.previous = this.#tail;
     this.#tail = node;
 
     this.#length++;
-    this.length = this.#length;
   }
 
   #isValidIndex(index: number): boolean {
@@ -165,7 +157,7 @@ class LinkedList<T> {
 
     let tempNode: LinkedListNode<T> | null = this.#head!!.next;
 
-    while (tempNode) {
+    while (tempNode !== null) {
       if (tempNode?.value == value) {
         return tempNode;
       }
@@ -211,15 +203,15 @@ class LinkedList<T> {
     let node = this.#getNode(value);
 
     if (!node) {
-      console.log("provided value is not in linkedlist");
+      console.log("provided value is not in linkedList");
       return null;
     }
 
     let result = node.value;
     let nextNode = node.next;
-    let previousNode = node.prevoius;
+    let previousNode = node.previous;
     previousNode!!.next = nextNode;
-    nextNode!!.prevoius = previousNode;
+    nextNode!!.previous = previousNode;
     return result;
   }
 
@@ -237,14 +229,13 @@ class LinkedList<T> {
     let tempNode: LinkedListNode<T> | null = this.#getNodeByIndex(index);
     if (!tempNode) return null;
 
-    let previous = tempNode!!.prevoius;
+    let previous = tempNode!!.previous;
     let next = tempNode!!.next;
 
     previous!!.next = next;
-    next!!.prevoius = previous;
+    next!!.previous = previous;
 
     this.#length--;
-    this.length = this.#length;
     return tempNode!!.value;
   }
 
@@ -256,9 +247,8 @@ class LinkedList<T> {
     if (this.#head?.next) {
       let value = this.#head?.value;
       this.#head = this.#head?.next;
-      this.#head.prevoius = null;
+      this.#head.previous = null;
       this.#length--;
-      this.length = this.#length;
       return value;
     }
 
@@ -266,7 +256,6 @@ class LinkedList<T> {
     this.#head = null;
     this.#tail = null;
     this.#length--;
-    this.length = this.#length;
     return value;
   }
 
@@ -274,12 +263,11 @@ class LinkedList<T> {
     if (!this.#tail) {
       return null;
     }
-    if (this.#tail?.prevoius) {
+    if (this.#tail?.previous) {
       let value = this.#tail?.value;
-      this.#tail = this.#tail?.prevoius;
+      this.#tail = this.#tail?.previous;
       this.#tail.next = null;
       this.#length--;
-      this.length = this.#length;
       return value;
     }
 
@@ -287,7 +275,6 @@ class LinkedList<T> {
     this.#tail = null;
     this.#head = null;
     this.#length--;
-    this.length = this.#length;
     return value;
   }
 
@@ -330,7 +317,7 @@ class LinkedList<T> {
 
     while (tempNode) {
       console.log(
-        `${tempNode.value} => ${tempNode?.prevoius?.value} ${tempNode?.next?.value}`
+        `${tempNode.value} => ${tempNode?.previous?.value} ${tempNode?.next?.value}`
       );
       tempNode = tempNode?.next;
     }
@@ -346,7 +333,7 @@ class LinkedList<T> {
       let next = current.next;
 
       current!!.next = previous;
-      current.prevoius = next;
+      current.previous = next;
 
       previous = current;
       current = next;
@@ -354,6 +341,10 @@ class LinkedList<T> {
 
     this.#head = tail;
     this.#tail = head;
+  }
+
+  get length() {
+    return this.#length;
   }
 }
 
