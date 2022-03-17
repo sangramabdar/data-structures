@@ -39,7 +39,7 @@ class Stack<T> {
     return this.#top.value;
   }
 
-  isEmpty(): boolean {
+  get isEmpty(): boolean {
     if (!this.#top) return true;
     return false;
   }

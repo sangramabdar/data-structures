@@ -42,7 +42,7 @@ class Queue<T> {
     return this.#front.value;
   }
 
-  isEmpty(): boolean {
+  get isEmpty(): boolean {
     if (!this.#front) return true;
     return false;
   }

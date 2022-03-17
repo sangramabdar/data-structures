@@ -1,5 +1,5 @@
 import LinkedList from "./linked_list";
-import Queue from "./quene";
+import Queue from "./queue";
 
 class GraphNode<T> {
   index: number;

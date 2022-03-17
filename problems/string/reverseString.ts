@@ -1,7 +1,7 @@
 import Stack from "../../data-structures/stack";
 
 function reverseString(s: string) {
-  return reverseStringStack(s, 0, s.length - 1);
+  return reverseStringStack(s);
 }
 
 function reverserStringRecursion(s: string, start: number, end: number) {
@@ -16,19 +16,22 @@ function reverserStringRecursion(s: string, start: number, end: number) {
   return s[end] + reverserStringRecursion(s, start + 1, end - 1) + s[start];
 }
 
-function reverseStringStack(s: string, start: number, end: number) {
+function reverseStringStack(s: string) {
   const stack = new Stack<{ start: number; end: number }>();
+  let start = 0;
+  let end = s.length - 1;
   stack.push({ start, end });
   let result = "";
-  while (!stack.isEmpty()) {
+
+  while (true) {
     start++;
     end--;
-    if (start < end) {
-      stack.push({ start, end });
-      continue;
-    }
+    if (start > end) break;
+    stack.push({ start, end });
+  }
+
+  while (!stack.isEmpty()) {
     const n = stack.pop();
-    console.log(n);
     if (n?.start == n?.end) {
       result = s[n!!.start];
       continue;
@@ -38,4 +41,4 @@ function reverseStringStack(s: string, start: number, end: number) {
   console.log(result);
 }
 
-export default reverseString;
+export { reverseStringStack, reverseString };

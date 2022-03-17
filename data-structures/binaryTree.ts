@@ -1,4 +1,4 @@
-import Queue from "./quene";
+import Queue from "./queue";
 
 class BTNode<T> {
   value: T;
@@ -149,7 +149,7 @@ class BinaryTree<T> {
 
     queue.enqueue(this.root as BTNode<T>);
 
-    while (!queue.isEmpty()) {
+    while (!queue.isEmpty) {
       let currentNode: BTNode<T> | null = queue.dequeue();
       console.log(currentNode?.value);
       if (currentNode?.left) {
@@ -219,7 +219,7 @@ class BinaryTreeWithRecursion<T> {
 
     queue.enqueue(this.root);
 
-    while (!queue.isEmpty()) {
+    while (!queue.isEmpty) {
       let curretNode: BTNode<T> | null = queue.dequeue();
       console.log(curretNode?.value);
 
