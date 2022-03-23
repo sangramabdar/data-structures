@@ -3,103 +3,76 @@ class MaxHeap<T> {
   #length: number = 0;
 
   add(value: T) {
-    this.#length++;
-    this.#elements[this.#length] = value;
+    this.#elements.push(value);
 
-    if (this.#length == 1) return;
+    let currentIndex = this.#elements.length - 1;
+    let currentValue = this.#elements[currentIndex];
 
-    let currentIndex = this.#length;
-
-    while (currentIndex >= 1) {
-      let currentValue = this.#elements[currentIndex];
-      let parentIndex = parseInt(`${currentIndex / 2}`);
+    while (currentIndex > 0) {
+      let parentIndex = Math.floor((currentIndex - 1) / 2);
       let parentValue = this.#elements[parentIndex];
 
       if (currentValue <= parentValue) return;
 
       this.#elements[parentIndex] = currentValue;
       this.#elements[currentIndex] = parentValue;
+
       currentIndex = parentIndex;
     }
   }
 
   delete(): T | null {
-    //to handle certain cases
-    if (this.#length == 0) return null;
+    if (this.#elements.length === 0) return null;
 
-    if (this.#length <= 2) {
-      let value = this.#elements[1];
-      if (this.#length == 2) {
-        let leftValue = this.#elements[2 * 1];
-        this.#elements[1] = leftValue;
-        this.#length--;
-        return value;
-      } else {
-        this.#length--;
-        this.#elements = [];
-        return value;
-      }
+    if (this.#elements.length == 1) {
+      let max = this.#elements[0];
+      this.#elements.pop();
+      return max;
     }
 
-    let value = this.#elements[1];
-    this.#elements[1] = this.#elements[this.#length];
+    const max = this.#elements[0];
+    const end = this.#elements.pop()!!;
+    this.#elements[0] = end;
 
-    let currentIndex = 1;
-    let leftIndex = 2 * currentIndex;
-    let rightIndex = 2 * currentIndex + 1;
+    let currentValue = this.#elements[0];
+    let currentIndex = 0;
+    let length = this.#elements.length;
 
     let leftValue: T | null = null;
     let rightValue: T | null = null;
 
-    this.#length--;
-
     while (true) {
-      let larger;
-      leftIndex = 2 * currentIndex;
-      rightIndex = 2 * currentIndex + 1;
+      let swapIndex: number | null = null;
+      let leftIndex = 2 * currentIndex + 1;
+      let rightIndex = 2 * currentIndex + 2;
 
-      if (leftIndex <= this.#length) {
+      if (leftIndex < length) {
         leftValue = this.#elements[leftIndex];
-      } else {
-        leftValue = null;
+        if (leftValue > currentValue) swapIndex = leftIndex;
       }
-      if (rightIndex <= this.#length) {
+
+      if (rightIndex < length) {
         rightValue = this.#elements[rightIndex];
-      } else {
-        rightValue = null;
-      }
-
-      if (leftValue != null && rightValue != null) {
-        larger = leftValue < rightValue ? rightValue : leftValue;
-      } else if (leftValue != null || rightValue != null) {
-        if (!leftValue) {
-          larger = rightValue;
-        } else {
-          larger = leftValue;
+        if (
+          (swapIndex === null && rightValue > currentValue) ||
+          (swapIndex !== null && rightValue > leftValue!!)
+        ) {
+          swapIndex = rightIndex;
         }
-      } else {
-        break;
       }
 
-      let childIndex;
-      if (larger == leftValue) {
-        childIndex = 2 * currentIndex;
-      } else {
-        childIndex = 2 * currentIndex + 1;
-      }
+      if (swapIndex === null) break;
 
       let parentValue = this.#elements[currentIndex];
-      let childValue = this.#elements[childIndex];
+      let childValue = this.#elements[swapIndex];
 
-      if (parentValue >= childValue) break;
-
-      this.#elements[childIndex] = parentValue;
+      this.#elements[swapIndex] = parentValue;
       this.#elements[currentIndex] = childValue;
 
-      currentIndex = childIndex;
+      currentIndex = swapIndex;
     }
 
-    return value;
+    return max;
   }
 
   top() {
@@ -115,105 +88,77 @@ class MinHeap<T> {
   #length: number = 0;
 
   add(value: T) {
-    this.#length++;
-    this.#elements[this.#length] = value;
+    this.#elements.push(value);
 
-    if (this.#length == 1) return;
+    let currentIndex = this.#elements.length - 1;
+    let currentValue = this.#elements[currentIndex];
 
-    let currentIndex = this.#length;
-
-    while (currentIndex >= 1) {
-      let currentValue = this.#elements[currentIndex];
-      let parentIndex = parseInt(`${currentIndex / 2}`);
+    while (currentIndex > 0) {
+      let parentIndex = Math.floor((currentIndex - 1) / 2);
       let parentValue = this.#elements[parentIndex];
 
       if (currentValue >= parentValue) return;
 
       this.#elements[parentIndex] = currentValue;
       this.#elements[currentIndex] = parentValue;
+
       currentIndex = parentIndex;
     }
   }
 
   delete(): T | null {
-    //to handle certain cases
-    if (this.#length == 0) return null;
+    if (this.#elements.length === 0) return null;
 
-    if (this.#length <= 2) {
-      let value = this.#elements[1];
-      if (this.#length == 2) {
-        let leftValue = this.#elements[2 * 1];
-        this.#elements[1] = leftValue;
-        this.#length--;
-        return value;
-      } else {
-        this.#length--;
-        this.#elements = [];
-        return value;
-      }
+    if (this.#elements.length == 1) {
+      let max = this.#elements[0];
+      this.#elements.pop();
+      return max;
     }
 
-    let value = this.#elements[1];
-    this.#elements[1] = this.#elements[this.#length];
+    const max = this.#elements[0];
+    const end = this.#elements.pop()!!;
+    this.#elements[0] = end;
 
-    let currentIndex = 1;
-    let leftIndex = 2 * currentIndex;
-    let rightIndex = 2 * currentIndex + 1;
+    let currentValue = this.#elements[0];
+    let currentIndex = 0;
+    let length = this.#elements.length;
 
     let leftValue: T | null = null;
     let rightValue: T | null = null;
 
-    this.#length--;
-
     while (true) {
-      let larger;
-      leftIndex = 2 * currentIndex;
-      rightIndex = 2 * currentIndex + 1;
+      let swapIndex: number | null = null;
+      let leftIndex = 2 * currentIndex + 1;
+      let rightIndex = 2 * currentIndex + 2;
 
-      if (leftIndex <= this.#length) {
+      if (leftIndex < length) {
         leftValue = this.#elements[leftIndex];
-      } else {
-        leftValue = null;
+        if (leftValue < currentValue) swapIndex = leftIndex;
       }
-      if (rightIndex <= this.#length) {
+
+      if (rightIndex < length) {
         rightValue = this.#elements[rightIndex];
-      } else {
-        rightValue = null;
-      }
-
-      if (leftValue != null && rightValue != null) {
-        larger = leftValue < rightValue ? rightValue : leftValue;
-      } else if (leftValue != null || rightValue != null) {
-        if (!leftValue) {
-          larger = rightValue;
-        } else {
-          larger = leftValue;
+        if (
+          (swapIndex === null && rightValue < currentValue) ||
+          (swapIndex !== null && rightValue < leftValue!!)
+        ) {
+          swapIndex = rightIndex;
         }
-      } else {
-        break;
       }
 
-      let childIndex;
-      if (larger == leftValue) {
-        childIndex = 2 * currentIndex;
-      } else {
-        childIndex = 2 * currentIndex + 1;
-      }
+      if (swapIndex === null) break;
 
       let parentValue = this.#elements[currentIndex];
-      let childValue = this.#elements[childIndex];
+      let childValue = this.#elements[swapIndex];
 
-      if (parentValue <= childValue) break;
-
-      this.#elements[childIndex] = parentValue;
+      this.#elements[swapIndex] = parentValue;
       this.#elements[currentIndex] = childValue;
 
-      currentIndex = childIndex;
+      currentIndex = swapIndex;
     }
 
-    return value;
+    return max;
   }
-
   top() {
     if (this.#length >= 1) {
       return this.#elements[1];
@@ -222,7 +167,7 @@ class MinHeap<T> {
   }
 }
 
-let h = new MaxHeap<number>();
+let h = new MinHeap<number>();
 h.add(10);
 h.add(9);
 h.add(8);
