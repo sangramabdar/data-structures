@@ -1,4 +1,5 @@
-import Stack from "./data-structures/stack";
+import PriorityQueue from "./data-structures/PriorityQueue";
+import Stack from "./data-structures/Stack";
 
 function addNumbers(n) {
   let s = new Stack<number>();
@@ -57,4 +58,7 @@ function fib(n: number) {
   console.log(map[n]);
 }
 
-fib(80);
+// fib(80);
+
+
+

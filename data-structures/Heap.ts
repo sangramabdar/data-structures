@@ -1,6 +1,5 @@
 class MaxHeap<T> {
   #elements: T[] = [];
-  #length: number = 0;
 
   add(value: T) {
     this.#elements.push(value);
@@ -38,13 +37,12 @@ class MaxHeap<T> {
     let currentIndex = 0;
     let length = this.#elements.length;
 
-    let leftValue: T | null = null;
-    let rightValue: T | null = null;
-
     while (true) {
       let swapIndex: number | null = null;
       let leftIndex = 2 * currentIndex + 1;
       let rightIndex = 2 * currentIndex + 2;
+      let leftValue: T | null = null;
+      let rightValue: T | null = null;
 
       if (leftIndex < length) {
         leftValue = this.#elements[leftIndex];
@@ -75,17 +73,23 @@ class MaxHeap<T> {
     return max;
   }
 
-  top() {
-    if (this.#length >= 1) {
-      return this.#elements[1];
+  peek() {
+    if (this.#elements.length == 0) {
+      return null;
     }
-    return null;
+    return this.#elements[0];
+  }
+
+  isEmpty(): boolean {
+    if (this.#elements.length == 0) {
+      return true;
+    }
+    return false;
   }
 }
 
 class MinHeap<T> {
   #elements: T[] = [];
-  #length: number = 0;
 
   add(value: T) {
     this.#elements.push(value);
@@ -123,13 +127,12 @@ class MinHeap<T> {
     let currentIndex = 0;
     let length = this.#elements.length;
 
-    let leftValue: T | null = null;
-    let rightValue: T | null = null;
-
     while (true) {
       let swapIndex: number | null = null;
       let leftIndex = 2 * currentIndex + 1;
       let rightIndex = 2 * currentIndex + 2;
+      let leftValue: T | null = null;
+      let rightValue: T | null = null;
 
       if (leftIndex < length) {
         leftValue = this.#elements[leftIndex];
@@ -159,32 +162,19 @@ class MinHeap<T> {
 
     return max;
   }
-  top() {
-    if (this.#length >= 1) {
-      return this.#elements[1];
+
+  peek() {
+    if (this.#elements.length == 0) {
+      return null;
     }
-    return null;
+    return this.#elements[0];
+  }
+  isEmpty(): boolean {
+    if (this.#elements.length == 0) {
+      return true;
+    }
+    return false;
   }
 }
 
-let h = new MinHeap<number>();
-h.add(10);
-h.add(9);
-h.add(8);
-h.add(7);
-h.add(6);
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-console.log(h.delete());
-h.add(1);
-console.log(h.delete());
-console.log(h.delete());
+export { MaxHeap, MinHeap };

@@ -1,4 +1,4 @@
-import Queue from "./queue";
+import Queue from "./Queue";
 
 class BTNode<T> {
   value: T;

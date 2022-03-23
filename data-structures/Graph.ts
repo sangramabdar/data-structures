@@ -1,5 +1,5 @@
-import LinkedList from "./linked_list";
-import Queue from "./queue";
+import LinkedList from "./Linked_list";
+import Queue from "./Queue";
 
 class GraphNode<T> {
   index: number;
@@ -102,7 +102,7 @@ class Graph<E> {
         q.enqueue(this.nodes[index]);
 
         //bfs
-        while (!q.isEmpty()) {
+        while (!q.isEmpty) {
           let node = q.dequeue()!!;
 
           //to check child is visited or not
