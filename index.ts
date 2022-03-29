@@ -1,4 +1,4 @@
-import PriorityQueue from "./data-structures/PriorityQueue";
+import { MinPriorityQueue } from "./data-structures/PriorityQueue";
 import Stack from "./data-structures/Stack";
 
 function addNumbers(n) {
@@ -58,7 +58,6 @@ function fib(n: number) {
   console.log(map[n]);
 }
 
-// fib(80);
+let minP = new MinPriorityQueue<string>();
 
-
-
+console.log(minP);
