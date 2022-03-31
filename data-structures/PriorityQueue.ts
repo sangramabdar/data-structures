@@ -1,3 +1,5 @@
+import Stack from "./Stack";
+
 class PriorityQueueNode<T> {
   value: T;
   priority: number;
@@ -186,7 +188,7 @@ class MinPriorityQueue<T> {
 }
 
 class PriorityQueueWithStack<T> {
-  values: PriorityQueueNode<T>[] = [];
+  values: Stack<PriorityQueueNode<T>> = new Stack<PriorityQueueNode<T>>();
 
   //o(n) time complexity
   enqueue(value: T, priority) {
@@ -195,7 +197,7 @@ class PriorityQueueWithStack<T> {
   }
 
   #enqueue(node: PriorityQueueNode<T>) {
-    if (this.values.length == 0) {
+    if (this.values.isEmpty) {
       return this.values.push(node);
     }
 
@@ -212,12 +214,12 @@ class PriorityQueueWithStack<T> {
 
   //o(1) time complexity
   dequeue(): PriorityQueueNode<T> | null {
-    if (this.values.length == 0) return null;
+    if (this.values.isEmpty) return null;
     return this.values.pop()!!;
   }
 
   isEmpty(): boolean {
-    if (this.values.length == 0) return true;
+    if (this.values.isEmpty) return true;
     return false;
   }
 }

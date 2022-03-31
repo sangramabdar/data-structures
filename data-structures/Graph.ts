@@ -1,121 +1,54 @@
-import LinkedList from "./Linked_list";
 import Queue from "./Queue";
+import Stack from "./Stack";
 
 class GraphNode<T> {
-  index: number;
-  value?: T;
-
-  constructor(value: T, index: number) {
-    this.index = index;
+  value: T;
+  nodesList: GraphNode<T>[] = [];
+  index: number = 0;
+  constructor(value: T) {
     this.value = value;
+  }
+
+  connect(node: GraphNode<T>) {
+    this.nodesList.push(node);
+    node.nodesList.push(this);
   }
 }
 
-class Graph<E> {
-  graph: Array<LinkedList<GraphNode<E>>> = new Array();
-  nodes: Array<GraphNode<E>> = [];
+class Graph<T> {
+  nodes: Array<GraphNode<T>> = [];
   totalNodes: number = 0;
 
-  addNode(node: GraphNode<E>) {
-    this.graph[node.index] = new LinkedList();
-    this.nodes[node.index] = node;
+  addNode(node: GraphNode<T>) {
     this.totalNodes++;
+    node.index = this.totalNodes;
+    this.nodes.push(node);
   }
 
-  addEdge(firstNode: GraphNode<E>, secondNode: GraphNode<E>) {
-    if (!this.graph[firstNode.index]) {
-      this.graph[firstNode.index] = new LinkedList();
-      this.nodes[firstNode.index] = firstNode;
-      this.totalNodes++;
+  printAllNodes() {
+    for (let node of this.nodes) {
+      console.log(node);
     }
-
-    if (!this.graph[secondNode.index]) {
-      this.graph[secondNode.index] = new LinkedList();
-      this.nodes[secondNode.index] = secondNode;
-      this.totalNodes++;
-    }
-
-    this.graph[firstNode.index].add(secondNode);
-    this.graph[secondNode.index].add(firstNode);
-  }
-
-  // bfsWithNodes(startNode: GraphNode<E>, endNode: GraphNode<E>) {
-  //   if (!this.graph[startNode.index] || !this.graph[endNode.index])
-  //     return "node is not there";
-
-  //   let q: Queue<GraphNode<E>> = new Queue();
-  //   let visited: boolean[] = [];
-
-  //   for (let i = 0; i < this.graph.length; i++) {
-  //     visited[i] = false;
-  //   }
-  //   let path: any = [];
-
-  //   visited[startNode.index] = true;
-  //   q.enqueue(startNode);
-  //   path.push(startNode);
-
-  //   //bfs
-  //   while (!q.isEmpty()) {
-  //     let node = q.dequeue()!!;
-  //     if (visited[endNode.index]) break;
-  //     for (let element of this.graph[node.index].getAllValues()) {
-  //       if (!visited[element.index]) {
-  //         visited[element.index] = true;
-  //         q.enqueue(element);
-  //         path.push(element);
-  //       }
-  //     }
-  //   }
-
-  //   if (!visited[endNode.index]) {
-  //     return "path is not available";
-  //   }
-  //   console.log(path);
-  //   return "path is available";
-  // }
-
-  getIndexes() {
-    let mappedKeys: {} = {};
-
-    for (let j = 0; j < this.nodes.length; j++) {
-      if (this.nodes[j]) mappedKeys[j] = j;
-    }
-    return mappedKeys;
   }
 
   bfs() {
-    let q: Queue<GraphNode<E>> = new Queue();
-    let visited: boolean[] = [];
+    let q: Queue<GraphNode<T>> = new Queue();
 
-    for (let i = 0; i < this.graph.length; i++) {
-      visited[i] = false;
+    let visited: boolean[] = [];
+    for (let node of this.nodes) {
+      visited[node.index] = false;
     }
 
-    let mappedKeys: {} = this.getIndexes();
-
-    for (let key in mappedKeys) {
-      // console.log("key - ", key);
-      let index = mappedKeys[key];
-
-      if (!visited[index]) {
-        q.enqueue(this.nodes[index]);
-
-        //bfs
+    for (let node of this.nodes) {
+      if (!visited[node.index]) {
+        q.enqueue(node);
         while (!q.isEmpty) {
-          let node = q.dequeue()!!;
-
-          //to check child is visited or not
-          if (visited[node.index]) continue;
-          visited[node.index] = true;
-
-          console.log(node.value);
-
-          for (let element of this.graph[node.index].getAllValues()) {
-            console.log("checking for : ", element.index);
-            if (!visited[element.index]) {
-              q.enqueue(element);
-            }
+          let node = q.dequeue();
+          if (visited[node!!.index]) continue;
+          visited[node!!.index] = true;
+          console.log(node!!.value);
+          for (let neighbour of node!!.nodesList) {
+            q.enqueue(neighbour);
           }
         }
       }
@@ -123,71 +56,80 @@ class Graph<E> {
   }
 
   dfs() {
+    let s: Stack<GraphNode<T>> = new Stack();
+
     let visited: boolean[] = [];
-
-    for (let i = 0; i < this.graph.length; i++) {
-      visited[i] = false;
+    for (let node of this.nodes) {
+      visited[node.index] = false;
     }
 
-    let mappedKeys: {} = this.getIndexes();
+    for (let node of this.nodes) {
+      if (!visited[node.index]) {
+        s.push(node);
 
-    for (let key in mappedKeys) {
-      let index = mappedKeys[key];
+        while (!s.isEmpty) {
+          let node = s.pop()!!;
 
-      if (!visited[index]) {
-        //dfs
-        this.#dfsRecursiveCall(this.nodes[index], visited);
+          if (visited[node.index]) continue;
+          visited[node.index] = true;
+          console.log(node.value);
+          for (let neighbour of node.nodesList) {
+            s.push(neighbour);
+          }
+        }
       }
     }
   }
 
-  #dfsRecursiveCall(node: GraphNode<E>, visited: boolean[]) {
+  dfsWithRecursion() {
+    let visited: boolean[] = [];
+    for (let node of this.nodes) {
+      visited[node.index] = false;
+    }
+
+    for (let node of this.nodes) {
+      if (!visited[node.index]) {
+        this._dfsWithRecursion(node, visited);
+      }
+    }
+  }
+
+  _dfsWithRecursion(node: GraphNode<T>, visited: boolean[]) {
+    if (visited[node.index]) return;
     visited[node.index] = true;
-
     console.log(node.value);
-    for (let element of this.graph[node.index].getAllValues()) {
-      if (!visited[element.index]) {
-        this.#dfsRecursiveCall(element, visited);
-      }
+    for (let neighbour of node.nodesList) {
+      this._dfsWithRecursion(neighbour, visited);
     }
   }
-
-  // dfsWithNodes(startNode: GraphNode<E>, endNode: GraphNode<E>) {
-  //   if (!this.graph[startNode.index] || !this.graph[endNode.index])
-  //     return "node is not there";
-
-  //   let visited: boolean[] = [];
-
-  //   for (let i = 0; i < this.graph.length; i++) {
-  //     visited[i] = false;
-  //   }
-  //   let path: any = [];
-
-  //   this.#dfsForNode(startNode, endNode, visited, path);
-
-  //   if (!visited[endNode.index]) return "path is not available";
-
-  //   console.log(path);
-  //   return "path is available";
-  // }
-
-  // #dfsForNode(
-  //   node: GraphNode<E>,
-  //   endNode: GraphNode<E>,
-  //   visited: boolean[],
-  //   path: any
-  // ) {
-  //   if (visited[endNode.index]) return;
-
-  //   visited[node.index] = true;
-  //   path.push(node);
-
-  //   for (let element of this.graph[node.index].getAllValues()) {
-  //     if (!visited[element.index]) {
-  //       this.#dfsForNode(element, endNode, visited, path);
-  //     }
-  //   }
-  // }
 }
+
+let pune = new GraphNode<string>("pune");
+let mumbai = new GraphNode<string>("mumbai");
+let delhi = new GraphNode<string>("delhi");
+let banglore = new GraphNode<string>("banglore");
+let chennai = new GraphNode<string>("chennai");
+let kashmir = new GraphNode<string>("kashmir");
+
+pune.connect(mumbai);
+pune.connect(chennai);
+mumbai.connect(chennai);
+chennai.connect(delhi);
+banglore.connect(chennai);
+
+let graph = new Graph<string>();
+
+graph.addNode(pune);
+graph.addNode(mumbai);
+graph.addNode(delhi);
+graph.addNode(banglore);
+graph.addNode(chennai);
+graph.addNode(kashmir);
+
+graph.bfs();
+console.log();
+graph.dfs();
+console.log();
+graph.dfsWithRecursion();
 
 export { Graph, GraphNode };
