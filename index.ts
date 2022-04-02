@@ -1,5 +1,5 @@
-import { MinPriorityQueue } from "./data-structures/PriorityQueue";
 import Stack from "./data-structures/Stack";
+import mergeSort from "./algorithms/mergeSort";
 
 function addNumbers(n) {
   let s = new Stack<number>();
@@ -58,6 +58,6 @@ function fib(n: number) {
   console.log(map[n]);
 }
 
-let minP = new MinPriorityQueue<string>();
-
-console.log(minP);
+let a = [1, 3, 4, 0, -1, 22];
+mergeSort(a);
+console.log(a);

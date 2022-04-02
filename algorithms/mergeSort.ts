@@ -17,43 +17,45 @@ function sort(arr: number[], start: number, end: number) {
 function merge(arr: number[], start: number, mid: number, end: number) {
   let i = start;
   let j = mid + 1;
-  let k = start;
-  let b: number[] = [];
+  let localIndex = 0;
+  let temp: number[] = [];
 
-  for (let m = 0; m <= end; m++) {
-    b[m] = 0;
+  for (let m = 0; m <= end - start + 1; m++) {
+    temp[m] = 0;
   }
 
   //condition to check left or right part of array is merged or not
   while (i <= mid && j <= end) {
     if (arr[i] < arr[j]) {
-      b[k] = arr[i];
+      temp[localIndex] = arr[i];
       i++;
     } else {
-      b[k] = arr[j];
+      temp[localIndex] = arr[j];
       j++;
     }
-    k++;
+    localIndex++;
   }
 
   //pushing remaining elements in array
   if (i > mid) {
     while (j <= end) {
-      b[k] = arr[j];
+      temp[localIndex] = arr[j];
       j++;
-      k++;
+      localIndex++;
     }
   } else {
     while (i <= mid) {
-      b[k] = arr[i];
+      temp[localIndex] = arr[i];
       i++;
-      k++;
+      localIndex++;
     }
   }
 
-  //copyig all elements to main array
+  localIndex = 0;
+  //copying all elements to main array
   for (let k = start; k <= end; k++) {
-    arr[k] = b[k];
+    arr[k] = temp[localIndex];
+    localIndex++;
   }
 }
 

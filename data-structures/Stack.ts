@@ -34,7 +34,7 @@ class Stack<T> {
     return value;
   }
 
-  peek(): T | null {
+  top(): T | null {
     if (!this.#top) return null;
     return this.#top.value;
   }
@@ -46,6 +46,48 @@ class Stack<T> {
 
   get size() {
     return this.#size;
+  }
+}
+
+class MaxStack {
+  elements: Stack<number> = new Stack<number>();
+  max: Stack<number> = new Stack<number>();
+
+  push(value: number) {
+    this.elements.push(value);
+
+    if (this.max.isEmpty) {
+      this.max.push(value);
+    } else {
+      this.max.push(Math.max(value, this.max.top()!!));
+    }
+  }
+
+  pop(): number | null {
+    return this.elements.pop();
+  }
+
+  top(): number | null {
+    return this.elements.top();
+  }
+
+  popMax(): number | null {
+    let maxValue = this.max.top();
+
+    let tempStack = new Stack<number>();
+
+    while (this.elements.top() != maxValue) {
+      tempStack.push(this.elements.pop()!!);
+      this.max.pop();
+    }
+
+    this.elements.pop();
+    this.max.pop();
+
+    while (!tempStack.isEmpty) {
+      this.push(tempStack.pop()!!);
+    }
+    return maxValue;
   }
 }
 

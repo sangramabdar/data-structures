@@ -1,4 +1,4 @@
-function QuickSort(array: number[]): number[] {
+function QuickSort2(array: number[]): number[] {
   if (array.length < 2) {
     return array;
   } else {
@@ -13,14 +13,16 @@ function QuickSort(array: number[]): number[] {
         greater.push(array[i]);
       }
     }
-    return [...QuickSort(less), pivot, ...QuickSort(greater)];
+    return [...QuickSort2(less), pivot, ...QuickSort2(greater)];
   }
 }
 
+//to sort or put pivot at correct index in array
 function Partition(arr: number[], start: number, end: number) {
   let pivot = arr[start];
   let i = start;
   let j = end;
+
   while (i < j) {
     while (arr[i] <= pivot) i++;
     while (arr[j] > pivot) j--;
@@ -38,10 +40,10 @@ function Partition(arr: number[], start: number, end: number) {
   return j;
 }
 
-function QuickSort2(arr: number[], start: number, end: number) {
+function QuickSort(arr: number[], start: number, end: number) {
   if (start < end) {
     let index = Partition(arr, start, end);
-    QuickSort2(arr, start, index - 1);
-    QuickSort2(arr, index + 1, end);
+    QuickSort(arr, start, index - 1);
+    QuickSort(arr, index + 1, end);
   }
 }
